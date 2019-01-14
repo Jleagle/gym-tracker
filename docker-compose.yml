@@ -1,0 +1,20 @@
+version: '3'
+services:
+
+  chrome:
+    container_name: chrome
+    hostname: chrome
+    image: alekzonder/puppeteer:latest
+    volumes:
+      - ./index.js:/app/index.js:ro
+    entrypoint:
+      - node
+      - /app/index.js
+
+
+#  website:
+#    container_name: website
+#    hostname: website
+#    build: .
+#    ports:
+#      - "5000:5000"
