@@ -30,8 +30,11 @@ const puppeteer = require('puppeteer');
         console.log(e);
     }
 
-    browser.close();
+    const people = await page.$eval('.heading.heading--level3.secondary-color.margin-none', el => el.innerText);
 
+    console.log(people);
+
+    browser.close();
     console.log('Done');
 
 })();
