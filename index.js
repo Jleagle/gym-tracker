@@ -18,9 +18,17 @@ const puppeteer = require('puppeteer');
     await page.type('#email', 'x');
     await page.type('#pin', 'y');
     await page.click('#login-submit');
-    await page.waitForNavigation({
-        timeout: 3000,
-    });
+
+    try {
+
+        await page.waitForNavigation({
+            timeout: 3000,
+        });
+
+    } catch (e) {
+        console.log('Login failed');
+        console.log(e);
+    }
 
     browser.close();
 
