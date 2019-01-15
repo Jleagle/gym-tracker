@@ -15,8 +15,8 @@ const puppeteer = require('puppeteer');
     const page = await browser.newPage();
     await page.goto('https://www.puregym.com/login/');
 
-    await page.type('#email', 'x');
-    await page.type('#pin', 'y');
+    await page.type('#email', process.env.PUREGYM_EMAIL);
+    await page.type('#pin', process.env.PUREGYM_PIN);
     await page.click('#login-submit');
 
     try {
