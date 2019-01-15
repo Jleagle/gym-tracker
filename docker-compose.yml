@@ -10,7 +10,9 @@ services:
     entrypoint:
       - node
       - /app/index.js
-
+    environment:
+      - PUREGYM_EMAIL
+      - PUREGYM_PIN
 
 #  website:
 #    container_name: website
