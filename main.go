@@ -1,59 +1,50 @@
 package main
 
 import (
-	"golang.org/x/net/publicsuffix"
-	"io/ioutil"
+	"context"
+	"fmt"
 	"log"
-	"net/http"
-	"net/http/cookiejar"
-	"strconv"
+	"regexp"
+	"time"
+
+	"github.com/chromedp/chromedp"
 )
 
-var (
-	client    *http.Client
-	cookieJar *cookiejar.Jar
+const (
+	port        = 9222
+	username    = ""
+	password    = ""
+	loginPath   = "https://www.puregym.com/Login/"
+	membersPath = "https://www.puregym.com/members/"
 )
 
-func init() {
-
-	var err error
-
-	cookieJar, err = cookiejar.New(&cookiejar.Options{PublicSuffixList: publicsuffix.List})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	client = &http.Client{
-		Jar: cookieJar,
-
-		// Don't follow redirects
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-}
+var regexMembers = regexp.MustCompile(`([0-9]{1,3}) (of|OF) ([0-9]{1,3})`)
 
 func main() {
 
-	log.Println("Getting members page..")
-	req, err := http.NewRequest("GET", "https://www.puregym.com/members/", nil)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	req.AddCookie(&http.Cookie{Name: ".AspNet.ApplicationCookie", Value: "jOyOArttKQTMnoAg7Eh7NnkuUwVOEb5cdNMoMqEjv-Vf4lk2V3hO9xwtGc8HWp6BFHihC8kxRGIoJ_VK-yq12z-hXYx9sj5oRqDQolKVQe2TwCvi1YAb-dsJcisqej-d14RtOBZ6myZwYxpc1xtBmzmI88sgKGvGGP3OA0lZGQs6X17YRKxeNZs4cLLuo9i9UvJnKz6rVqyFHqhdglmON7E1xbz1nC_7tX9xvWgnmbx2COmsq_Yjic2ZOOr1Uc7ftF2awz0762569FQQPdwh9UDPJlbnTHOFACABz6JbMHxYLR01Q2U0d3mnamZsImp4aM-uqCPuLUhcC9CzC8MnTvIk4O9BLTCUO3u10vbepPUR9RyB40Oto07ktXiInaEAMofgZD5zHg2q0j0pV00BLd0qNL8"})
+	// create context
+	ctx, cancel := chromedp.NewContext(context.Background())
+	defer cancel()
 
-	resp, err := client.Do(req)
+	ctx, cancel = context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	var people string
+	var town string
+
+	actions := []chromedp.Action{
+		chromedp.Navigate(membersPath),
+		// chromedp.WaitVisible("#people_in_gym"),
+		chromedp.WaitReady("#people_in_gym"),
+		chromedp.InnerHTML("#people_in_gym span", &people),
+		chromedp.InnerHTML("#people_in_gym a", &town),
+	}
+
+	err := chromedp.Run(ctx, actions...)
 	if err != nil {
 		log.Fatal(err)
 	}
-	//noinspection GoUnhandledErrorResult
-	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	log.Println("Request code: " + strconv.Itoa(resp.StatusCode))
-	log.Println("Body len: " + strconv.Itoa(len(body)))
+	fmt.Println(people)
+	fmt.Println(town)
 }
