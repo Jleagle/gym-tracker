@@ -35,7 +35,7 @@ func main() {
 
 	actions := []chromedp.Action{
 		chromedp.Navigate(membersPath),
-		// chromedp.WaitVisible("#people_in_gym"),
+		chromedp.WaitVisible("#people_in_gym"),
 		chromedp.WaitReady("#people_in_gym"),
 		chromedp.InnerHTML("#people_in_gym span", &people),
 		chromedp.InnerHTML("#people_in_gym a", &town),
