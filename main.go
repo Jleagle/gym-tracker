@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"sync"
 	"time"
 
 	"github.com/chromedp/chromedp"
@@ -47,4 +48,8 @@ func main() {
 
 	fmt.Println(people)
 	fmt.Println(town)
+
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	wg.Wait()
 }
