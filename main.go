@@ -4,6 +4,8 @@ import (
 	"context"
 	"os"
 	"regexp"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/chromedp/cdproto/cdp"
@@ -16,7 +18,7 @@ import (
 )
 
 var (
-	regexMembers = regexp.MustCompile(`(?i)([0-9]{1,3}) of ([0-9]{1,3})`)
+	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4}) of ([0-9,]{1,4})`)
 	cookies      []*network.Cookie
 	logger       *zap.Logger
 )
@@ -50,14 +52,32 @@ func trigger() {
 	ctx, cancel2 := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel2()
 
-	people, town, err := loginAndCheckMembers(ctx)
+	peopleString, town, err := loginAndCheckMembers(ctx)
 	if err != nil {
 		logger.Error("running chromedp", zap.Error(err))
 		return
 	}
 
-	logger.Info("people ", people)
-	logger.Info("town ", town)
+	peopleString = "10 of 20"
+
+	members := membersRegex.FindStringSubmatch(peopleString)
+	if len(members) == 3 {
+		now, err := strconv.Atoi(strings.Replace(members[1], ",", "", 1))
+		if err != nil {
+			logger.Error("parsing members", zap.Error(err))
+			return
+		}
+
+		max, err := strconv.Atoi(strings.Replace(members[2], ",", "", 1))
+		if err != nil {
+			logger.Error("parsing members", zap.Error(err))
+			return
+		}
+
+		pct := float64(now) / float64(max)
+
+		logger.Info("members", zap.Int("now", now), zap.Int("max", max), zap.Float64("pct", pct), zap.String("town", town))
+	}
 }
 
 func loginAndCheckMembers(ctx context.Context) (people, town string, err error) {
