@@ -18,12 +18,11 @@ import (
 var (
 	regexMembers = regexp.MustCompile(`(?i)([0-9]{1,3}) of ([0-9]{1,3})`)
 	cookies      []*network.Cookie
-	logger       *zap.SugaredLogger
+	logger       *zap.Logger
 )
 
 func init() {
-	loggerDev, _ := zap.NewDevelopment()
-	logger = loggerDev.Sugar()
+	logger, _ = zap.NewDevelopment()
 }
 
 func main() {
@@ -33,7 +32,7 @@ func main() {
 	c := cron.New()
 	_, err := c.AddFunc("@every 10m", trigger)
 	if err != nil {
-		logger.Error(err)
+		logger.Error("adding cron", zap.Error(err))
 		return
 	}
 	c.Start()
@@ -53,7 +52,8 @@ func trigger() {
 
 	people, town, err := loginAndCheckMembers(ctx)
 	if err != nil {
-		logger.Error(err)
+		logger.Error("running chromedp", zap.Error(err))
+		return
 	}
 
 	logger.Info("people ", people)
