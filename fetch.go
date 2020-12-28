@@ -7,12 +7,25 @@ import (
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
 	"github.com/chromedp/chromedp/device"
+	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
 	"os"
 	"strconv"
 	"strings"
 	"time"
 )
+
+func startCron() {
+
+	c := cron.New()
+	_, err := c.AddFunc("@every 10m", trigger)
+	if err != nil {
+		logger.Error("adding cron", zap.Error(err))
+		return
+	}
+	c.Start()
+
+}
 
 func trigger() {
 
