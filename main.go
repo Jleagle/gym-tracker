@@ -31,7 +31,7 @@ func main() {
 	defer logger.Sync()
 
 	c := cron.New()
-	_, err := c.AddFunc("*/10 * * * *", trigger)
+	_, err := c.AddFunc("@every 10m", trigger)
 	if err != nil {
 		logger.Error(err)
 		return
