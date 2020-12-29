@@ -17,14 +17,15 @@ import (
 
 func startCron() {
 
-	c := cron.New()
-	_, err := c.AddFunc("@every 10m", trigger)
-	if err != nil {
-		logger.Error("adding cron", zap.Error(err))
-		return
+	if os.Getenv("PURE_USER") != "" && os.Getenv("PURE_PASS") != "" {
+		c := cron.New()
+		_, err := c.AddFunc("@every 10m", trigger)
+		if err != nil {
+			logger.Error("adding cron", zap.Error(err))
+			return
+		}
+		c.Start()
 	}
-	c.Start()
-
 }
 
 func trigger() {
