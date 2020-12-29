@@ -32,14 +32,19 @@ func webserver() {
 
 	r.NotFound(errorHandler)
 
+	port := os.Getenv("PURE_PORT")
+	if port == "" {
+		port = "9030"
+	}
+
 	s := &http.Server{
-		Addr:              "0.0.0.0:" + os.Getenv("PURE_PORT"),
+		Addr:              "0.0.0.0:" + port,
 		Handler:           r,
 		ReadTimeout:       2 * time.Second,
 		ReadHeaderTimeout: 2 * time.Second,
 	}
 
-	logger.Info("Starting Frontend on " + "http://localhost:" + os.Getenv("PURE_PORT"))
+	logger.Info("Starting Frontend on " + "http://localhost:" + port)
 
 	err := s.ListenAndServe()
 	if err != nil {
