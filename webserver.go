@@ -16,10 +16,11 @@ func webserver() {
 	r.Use(middleware.RedirectSlashes)
 	r.Use(middleware.NewCompressor(flate.DefaultCompression, "text/html", "text/css", "text/javascript", "application/json", "application/javascript").Handler)
 
-	r.Get("/", pages.HomeHandler)
+	r.Get("/", homeHandler)
+	r.Get("/{gym}", homeHandler)
+	r.Post("/", newGymHandler)
 
-	// 404
-	r.NotFound(pages.Error404Handler)
+	r.NotFound(errorHandler)
 
 	s := &http.Server{
 		Addr:              "0.0.0.0:" + os.Getenv("PURE_PORT"),
@@ -34,4 +35,23 @@ func webserver() {
 	if err != nil {
 		logger.Error("serving webserver", zap.Error(err))
 	}
+}
+
+type homeTemplate struct {
+	Gym string
+}
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.Write([]byte("home"))
+}
+
+func errorHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.Write([]byte("error"))
+}
+
+func newGymHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.Write([]byte("new gym"))
 }
