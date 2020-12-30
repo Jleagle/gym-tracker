@@ -10,5 +10,6 @@ WORKDIR /root/
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y install tini
 COPY --from=build-env /root/pure-gym-tracker ./
+COPY ./assets ./assets
 ENTRYPOINT ["tini", "--"]
 CMD ["./pure-gym-tracker"]
