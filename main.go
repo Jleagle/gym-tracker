@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"regexp"
+
 	"github.com/chromedp/cdproto/network"
 	"go.uber.org/zap"
-	"regexp"
 )
 
 var (

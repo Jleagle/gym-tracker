@@ -2,6 +2,11 @@ package main
 
 import (
 	"context"
+	"os"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/cdproto/runtime"
@@ -9,10 +14,6 @@ import (
 	"github.com/chromedp/chromedp/device"
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
-	"os"
-	"strconv"
-	"strings"
-	"time"
 )
 
 func startCron() {

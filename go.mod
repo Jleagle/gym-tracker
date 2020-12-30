@@ -8,7 +8,6 @@ require (
 	github.com/go-chi/chi v1.5.1
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/gobwas/httphead v0.1.0 // indirect
-	github.com/robfig/cron v1.2.0
 	github.com/robfig/cron/v3 v3.0.1
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0

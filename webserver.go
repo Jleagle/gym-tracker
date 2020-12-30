@@ -2,16 +2,17 @@ package main
 
 import (
 	"compress/flate"
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
-	"github.com/gobuffalo/packr/v2"
-	"go.uber.org/zap"
 	"html/template"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/gobuffalo/packr/v2"
+	"go.uber.org/zap"
 )
 
 var (
