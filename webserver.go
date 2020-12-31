@@ -16,7 +16,8 @@ import (
 )
 
 var (
-	assetBox = packr.New("assets", "./assets")
+	publicBox = packr.New("public", "./public")
+	//templatesBox = packr.New("templates", "./templates")
 )
 
 func webserver() {
@@ -25,7 +26,7 @@ func webserver() {
 	r.Use(middleware.RedirectSlashes)
 	r.Use(middleware.NewCompressor(flate.DefaultCompression, "text/html", "text/css", "text/javascript", "application/json", "application/javascript").Handler)
 
-	r.Get("/assets/*", assetHandler(assetBox, "/assets"))
+	r.Get("/public/*", assetHandler(publicBox, "/public"))
 
 	r.Get("/", homeHandler)
 	r.Get("/{gym}", homeHandler)
@@ -66,7 +67,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := template.
-		Must(template.ParseFiles("./assets/home.gohtml")).
+		Must(template.ParseFiles("./templates/home.gohtml")).
 		ExecuteTemplate(w, "home", data)
 
 	if err != nil {
@@ -88,7 +89,7 @@ func errorHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := template.
-		Must(template.ParseFiles("./assets/error.gohtml")).
+		Must(template.ParseFiles("./templates/error.gohtml")).
 		ExecuteTemplate(w, "home", data)
 
 	if err != nil {
