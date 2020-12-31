@@ -79,7 +79,7 @@ type errorTemplate struct {
 	Code int
 }
 
-func errorHandler(w http.ResponseWriter, r *http.Request) {
+func errorHandler(w http.ResponseWriter, _ *http.Request) {
 
 	w.Header().Set("Content-Type", "text/html")
 	w.WriteHeader(404)
@@ -97,9 +97,9 @@ func errorHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func newGymHandler(w http.ResponseWriter, r *http.Request) {
+func newGymHandler(w http.ResponseWriter, _ *http.Request) {
 
-	w.Write([]byte("new gym"))
+	_, _ = w.Write([]byte("new gym"))
 }
 
 func assetHandler(box *packr.Box, path string) func(w http.ResponseWriter, r *http.Request) {
