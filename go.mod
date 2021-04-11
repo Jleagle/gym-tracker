@@ -8,6 +8,7 @@ require (
 	github.com/go-chi/chi v1.5.4
 	github.com/gobuffalo/packr/v2 v2.8.1
 	github.com/gobwas/httphead v0.1.0 // indirect
+	github.com/influxdata/influxdb1-client v0.0.0-20200827194710-b269163b24ab // indirect
 	github.com/karrick/godirwalk v1.16.1 // indirect
 	github.com/konsorten/go-windows-terminal-sequences v1.0.3 // indirect
 	github.com/robfig/cron/v3 v3.0.1
