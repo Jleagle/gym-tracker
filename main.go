@@ -24,11 +24,9 @@ var (
 	logger       *zap.Logger
 )
 
-func init() {
-	logger, _ = zap.NewDevelopment()
-}
-
 func main() {
+
+	logger, _ = zap.NewDevelopment()
 
 	defer func() {
 		err := logger.Sync()
@@ -36,12 +34,6 @@ func main() {
 			fmt.Println(err)
 		}
 	}()
-
-	startCron()
-	webserver()
-}
-
-func startCron() {
 
 	if os.Getenv("PURE_USER") != "" && os.Getenv("PURE_PASS") != "" {
 
@@ -55,6 +47,8 @@ func startCron() {
 		}
 		c.Start()
 	}
+
+	webserver()
 }
 
 func trigger() {

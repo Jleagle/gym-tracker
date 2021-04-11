@@ -17,7 +17,7 @@ import (
 
 var (
 	publicBox = packr.New("public", "./public")
-	//templatesBox = packr.New("templates", "./templates")
+	// templatesBox = packr.New("templates", "./templates")
 )
 
 func webserver() {
