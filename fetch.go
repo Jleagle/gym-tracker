@@ -94,7 +94,7 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 		}),
 		chromedp.Emulate(device.IPadPro),
 		chromedp.Navigate("https://www.puregym.com/members/"),
-		chromedp.WaitVisible("#loginForm, #people_in_gym"),
+		chromedp.WaitVisible("input[name=username], input[name=password], #people_in_gym"),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 
 			// Accept cookies, probably don't need to bother
@@ -118,7 +118,7 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 
 			// Login
 			var loginNodes []*cdp.Node
-			err = chromedp.Nodes("#loginForm", &loginNodes, chromedp.AtLeast(0)).Do(ctx)
+			err = chromedp.Nodes("input[name=username], input[name=password]", &loginNodes, chromedp.AtLeast(0)).Do(ctx)
 			if err != nil {
 				return err
 			}
@@ -127,17 +127,17 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 
 				logger.Info("Logging in")
 
-				err = chromedp.SendKeys("#loginForm input[type=email]", os.Getenv("PURE_USER")).Do(ctx)
+				err = chromedp.SendKeys("input[name=username]", os.Getenv("PURE_USER")).Do(ctx)
 				if err != nil {
 					return err
 				}
 
-				err = chromedp.SendKeys("#loginForm input[type=password]", os.Getenv("PURE_PASS")).Do(ctx)
+				err = chromedp.SendKeys("input[name=password]", os.Getenv("PURE_PASS")).Do(ctx)
 				if err != nil {
 					return err
 				}
 
-				err = chromedp.Click("#login-submit", chromedp.ByID).Do(ctx)
+				err = chromedp.Click("button[value=login]", chromedp.ByQuery).Do(ctx)
 				if err != nil {
 					return err
 				}
