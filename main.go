@@ -19,7 +19,7 @@ import (
 )
 
 var (
-	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4}) of ([0-9,]{1,4})`)
+	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)?\s?([0-9,]{1,4})?`)
 	cookies      []*network.Cookie
 	logger       *zap.Logger
 )
@@ -68,7 +68,7 @@ func trigger() {
 	}
 
 	members := membersRegex.FindStringSubmatch(peopleString)
-	if len(members) == 3 {
+	if len(members) == 4 {
 
 		now, err := strconv.Atoi(strings.Replace(members[1], ",", "", 1))
 		if err != nil {
@@ -76,7 +76,7 @@ func trigger() {
 			return
 		}
 
-		max, err := strconv.Atoi(strings.Replace(members[2], ",", "", 1))
+		max, err := strconv.Atoi(strings.Replace(members[3], ",", "", 1))
 		if err != nil {
 			logger.Error("parsing members", zap.Error(err))
 			return
