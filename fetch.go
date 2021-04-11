@@ -19,6 +19,9 @@ import (
 func startCron() {
 
 	if os.Getenv("PURE_USER") != "" && os.Getenv("PURE_PASS") != "" {
+
+		trigger()
+
 		c := cron.New()
 		_, err := c.AddFunc("@every 10m", trigger)
 		if err != nil {
@@ -47,6 +50,7 @@ func trigger() {
 
 	members := membersRegex.FindStringSubmatch(peopleString)
 	if len(members) == 3 {
+
 		now, err := strconv.Atoi(strings.Replace(members[1], ",", "", 1))
 		if err != nil {
 			logger.Error("parsing members", zap.Error(err))
@@ -74,6 +78,7 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 			logger.Info("Setting cookies", zap.Int("count", len(cookies)))
 
 			for _, v := range cookies {
+
 				expr := cdp.TimeSinceEpoch(time.Unix(int64(v.Expires), 0))
 				err := network.SetCookie(v.Name, v.Value).
 					WithExpires(&expr).
