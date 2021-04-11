@@ -75,7 +75,7 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 
 			for _, v := range cookies {
 				expr := cdp.TimeSinceEpoch(time.Unix(int64(v.Expires), 0))
-				_, err := network.SetCookie(v.Name, v.Value).
+				err := network.SetCookie(v.Name, v.Value).
 					WithExpires(&expr).
 					WithDomain(v.Domain).
 					WithHTTPOnly(v.HTTPOnly).
