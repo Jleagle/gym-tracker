@@ -105,9 +105,11 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 		network.Enable(),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 
-			logger.Info("Setting cookies", zap.Int("count", len(cookies)))
+			if len(cookies) > 0 {
 
-			for _, v := range cookies {
+				logger.Info("Setting cookies", zap.Int("count", len(cookies)))
+
+				for _, v := range cookies {
 
 				expr := cdp.TimeSinceEpoch(time.Unix(int64(v.Expires), 0))
 				err := network.SetCookie(v.Name, v.Value).
@@ -120,8 +122,9 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 					WithSecure(v.Secure).
 					Do(ctx)
 
-				if err != nil {
-					return err
+					if err != nil {
+						return err
+					}
 				}
 			}
 
