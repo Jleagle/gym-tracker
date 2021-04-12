@@ -1,7 +1,6 @@
 package main
 
 import (
-	"compress/flate"
 	"html/template"
 	"net/http"
 	"os"
@@ -10,45 +9,47 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
 	"github.com/gobuffalo/packr/v2"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cache"
+	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"go.uber.org/zap"
-)
-
-var (
-	publicBox = packr.New("public", "./public")
-	// templatesBox = packr.New("templates", "./templates")
 )
 
 func webserver() {
 
-	r := chi.NewRouter()
-	r.Use(middleware.RedirectSlashes)
-	r.Use(middleware.NewCompressor(flate.DefaultCompression, "text/html", "text/css", "text/javascript", "application/json", "application/javascript").Handler)
+	app := fiber.New()
+	app.Use(cors.New(cors.Config{
+		// AllowOrigins: "https://pgt.jimeagle.com/",
+		AllowMethods: "GET",
+		AllowHeaders: "Origin, Content-Type, Accept",
+	}))
+	app.Use(cache.New(cache.Config{
+		Expiration:   10 * time.Minute,
+		CacheControl: true,
+	}))
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelBestSpeed, // 1
+	}))
+	app.Use(filesystem.New(filesystem.Config{
+		Root:   http.Dir("./public"),
+		MaxAge: 3600,
+	}))
 
-	r.Get("/public/*", assetHandler(publicBox, "/public"))
-
-	r.Get("/", homeHandler)
-	r.Get("/{gym}", homeHandler)
-	r.Post("/", newGymHandler)
-
-	r.NotFound(errorHandler)
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("Hello, World 👋!")
+	})
 
 	port := os.Getenv("PURE_PORT")
 	if port == "" {
 		port = "9030"
 	}
 
-	s := &http.Server{
-		Addr:              "0.0.0.0:" + port,
-		Handler:           r,
-		ReadTimeout:       2 * time.Second,
-		ReadHeaderTimeout: 2 * time.Second,
-	}
-
 	logger.Info("Starting Frontend on " + "http://localhost:" + port)
 
-	err := s.ListenAndServe()
+	err := app.Listen("0.0.0.0:" + port)
 	if err != nil {
 		logger.Error("serving webserver", zap.Error(err))
 	}
