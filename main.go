@@ -96,7 +96,13 @@ func trigger() {
 		if _, err := f.WriteString(strconv.FormatInt(time.Now().Unix(), 10) + " " + strconv.Itoa(now) + "\n"); err != nil {
 			logger.Error("appending to file", zap.Error(err))
 		}
+
+		logger.Info("")
+
+		return
 	}
+
+	logger.Error("finding count failed", zap.String("string", peopleString))
 }
 
 func loginAndCheckMembers(ctx context.Context) (people, town string, err error) {
@@ -145,6 +151,7 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 			if len(cookieNodes) > 0 {
 
 				logger.Info("Submitting cookie popup")
+
 				_, exp, err := runtime.Evaluate("CookieInformation.submitAllCategories();").Do(ctx)
 				if err != nil {
 					return err
