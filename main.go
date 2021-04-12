@@ -109,18 +109,18 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 
 				logger.Info("Setting cookies", zap.Int("count", len(cookies)))
 
-				for _, v := range cookies {
+				for _, cookie := range cookies {
 
-				expr := cdp.TimeSinceEpoch(time.Unix(int64(v.Expires), 0))
-				err := network.SetCookie(v.Name, v.Value).
-					WithExpires(&expr).
-					WithDomain(v.Domain).
-					WithHTTPOnly(v.HTTPOnly).
-					WithPath(v.Path).
-					WithPriority(v.Priority).
-					WithSameSite(v.SameSite).
-					WithSecure(v.Secure).
-					Do(ctx)
+					expr := cdp.TimeSinceEpoch(time.Unix(int64(cookie.Expires), 0))
+					err := network.SetCookie(cookie.Name, cookie.Value).
+						WithExpires(&expr).
+						WithDomain(cookie.Domain).
+						WithHTTPOnly(cookie.HTTPOnly).
+						WithPath(cookie.Path).
+						WithPriority(cookie.Priority).
+						WithSameSite(cookie.SameSite).
+						WithSecure(cookie.Secure).
+						Do(ctx)
 
 					if err != nil {
 						return err
