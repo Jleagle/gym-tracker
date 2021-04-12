@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Jleagle/pure-gym-tracker/influx"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/cdproto/runtime"
