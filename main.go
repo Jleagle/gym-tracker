@@ -68,41 +68,31 @@ func trigger() {
 	}
 
 	members := membersRegex.FindStringSubmatch(peopleString)
-	if len(members) == 4 {
-
-		now, err := strconv.Atoi(strings.Replace(members[1], ",", "", 1))
-		if err != nil {
-			logger.Error("parsing members", zap.Error(err))
-			return
-		}
-
-		max, err := strconv.Atoi(strings.Replace(members[3], ",", "", 1))
-		if err != nil {
-			logger.Error("parsing members", zap.Error(err))
-			return
-		}
-
-		pct := float64(now) / float64(max)
-
-		logger.Info("members", zap.Int("now", now), zap.Int("max", max), zap.Float64("pct", pct), zap.String("town", town))
-
-		f, err := os.OpenFile("counts.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		if err != nil {
-			logger.Error("open a file", zap.Error(err))
-		}
-
-		defer f.Close()
-
-		if _, err := f.WriteString(strconv.FormatInt(time.Now().Unix(), 10) + " " + strconv.Itoa(now) + "\n"); err != nil {
-			logger.Error("appending to file", zap.Error(err))
-		}
-
-		logger.Info("")
-
+	if len(members) != 4 {
+		logger.Error("finding count failed", zap.String("string", peopleString))
 		return
 	}
 
-	logger.Error("finding count failed", zap.String("string", peopleString))
+	now, err := strconv.Atoi(strings.Replace(members[1], ",", "", 1))
+	if err != nil {
+		logger.Error("parsing members", zap.Error(err))
+		return
+	}
+
+	max, err := strconv.Atoi(strings.Replace(members[3], ",", "", 1))
+	if err != nil {
+		logger.Error("parsing members", zap.Error(err))
+		return
+	}
+
+	pct := float64(now) / float64(max)
+
+	logger.Info("members", zap.Int("now", now), zap.Int("max", max), zap.Float64("pct", pct), zap.String("town", town))
+
+	_, err = influx.Write(town, now, max)
+	if err != nil {
+		logger.Error("sending to influx failed", zap.Error(err))
+	}
 }
 
 func loginAndCheckMembers(ctx context.Context) (people, town string, err error) {
