@@ -42,12 +42,7 @@ func webserver() {
 		return c.SendString("Hello, World 👋!")
 	})
 
-	port := os.Getenv("PURE_PORT")
-	if port == "" {
-		port = "9030"
-	}
-
-	err := app.Listen("0.0.0.0:" + port)
+	err := app.Listen("0.0.0.0:" + os.Getenv("PURE_PORT"))
 	if err != nil {
 		logger.Error("serving webserver", zap.Error(err))
 	}
