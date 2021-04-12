@@ -13,8 +13,8 @@ var (
 	client *influx.Client
 	mutex  sync.Mutex
 
-	database  = os.Getenv("")
-	retention = os.Getenv("")
+	database  = os.Getenv("PURE_INFLUX_DATABASE")
+	retention = os.Getenv("PURE_INFLUX_RETENTION")
 )
 
 func getInfluxClient() (*influx.Client, error) {
