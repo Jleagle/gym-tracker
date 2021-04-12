@@ -26,6 +26,7 @@ var (
 
 func main() {
 
+	// Logger
 	logger, _ = zap.NewDevelopment()
 
 	defer func() {
@@ -35,18 +36,16 @@ func main() {
 		}
 	}()
 
-	if os.Getenv("PURE_USER") != "" && os.Getenv("PURE_PASS") != "" {
+	// Update
+	trigger()
 
-		trigger()
-
-		c := cron.New()
-		_, err := c.AddFunc("*/10 * * * *", trigger)
-		if err != nil {
-			logger.Error("adding cron", zap.Error(err))
-			return
-		}
-		c.Start()
+	c := cron.New()
+	_, err := c.AddFunc("*/10 * * * *", trigger)
+	if err != nil {
+		logger.Error("adding cron", zap.Error(err))
+		return
 	}
+	c.Start()
 
 	webserver()
 }
