@@ -40,7 +40,7 @@ func main() {
 		trigger()
 
 		c := cron.New()
-		_, err := c.AddFunc("@every 10m", trigger)
+		_, err := c.AddFunc("*/10 * * * *", trigger)
 		if err != nil {
 			logger.Error("adding cron", zap.Error(err))
 			return
