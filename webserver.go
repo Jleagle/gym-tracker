@@ -47,8 +47,6 @@ func webserver() {
 		port = "9030"
 	}
 
-	logger.Info("Starting Frontend on " + "http://localhost:" + port)
-
 	err := app.Listen("0.0.0.0:" + port)
 	if err != nil {
 		logger.Error("serving webserver", zap.Error(err))
