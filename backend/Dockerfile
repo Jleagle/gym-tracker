@@ -1,7 +1,7 @@
 # Build image
 FROM golang:1.15-alpine AS build-env
 WORKDIR /root/
-COPY ./ ./
+COPY .. ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o pure-gym-tracker
 
 # Runtime image
