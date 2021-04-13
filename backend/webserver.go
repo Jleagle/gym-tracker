@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/Jleagle/pure-gym-tracker/influx"
-	influxquerybuilder "github.com/benjamin658/influx-query-builder"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -86,19 +85,14 @@ func peopleHandler(c *fiber.Ctx) error {
 
 func heatmapHandler(c *fiber.Ctx) error {
 
-	q := influxquerybuilder.New()
-	q.Select(`max("max") AS max_max`)
-	q.Select(`max("pcnt") AS max_pcnt`)
-	q.Select(`max("people") AS max_people`)
-	q.From(`PureGym"."alltime"."gyms`)
-	q.Where(`time`, `>`, `now()-1d`)
-	q.Where(`gym`, `=`, `Fareham`)
-	q.GroupByTime(influxquerybuilder.NewDuration().Minute(10))
-	q.Fill("0")
-
-	resp, err := influx.Read(q.Build())
+	resp, err := influx.Read(`SELECT max("max") AS "max_max",max("pcnt") AS "max_pcnt",max("people") AS "max_people" ` +
+		`FROM "PureGym"."alltime"."gyms" ` +
+		`WHERE "gym" = 'Fareham' ` +
+		`GROUP BY time(10m) ` +
+		`FILL(0)`,
+	)
 	if err != nil {
-		logger.Error("failed to query influx", zap.Error(err))
+		return err
 	}
 
 	var hc = map[string][]int{}
