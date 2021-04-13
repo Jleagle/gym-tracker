@@ -75,13 +75,13 @@ func trigger() {
 
 	now, err := strconv.Atoi(strings.Replace(members[1], ",", "", 1))
 	if err != nil {
-		logger.Error("parsing members", zap.Error(err))
+		logger.Error("parsing members", zap.Error(err), zap.String("string", peopleString))
 		return
 	}
 
 	max, err := strconv.Atoi(strings.Replace(members[3], ",", "", 1))
 	if err != nil {
-		logger.Error("parsing members", zap.Error(err))
+		logger.Error("parsing members", zap.Error(err), zap.String("string", peopleString))
 		return
 	}
 
