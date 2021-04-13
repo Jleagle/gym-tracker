@@ -3,6 +3,7 @@ package influx
 import (
 	"net/url"
 	"os"
+	"strconv"
 	"sync"
 	"time"
 
@@ -41,12 +42,19 @@ func getClient() (*influx.Client, error) {
 
 func Write(gym string, count int, max int) (resp *influx.Response, err error) {
 
+	t := time.Now()
+
 	batch := influx.BatchPoints{
 		Points: []influx.Point{{
 			Measurement: "gyms",
-			Tags:        map[string]string{"gym": gym},
-			Time:        time.Time{},
-			Precision:   "m",
+			Tags: map[string]string{
+				"gym":      gym,
+				"yearDay":  strconv.Itoa(t.YearDay()),
+				"monthDay": strconv.Itoa(t.Day()),
+				"weekDay":  strconv.Itoa(int(t.Weekday())),
+			},
+			Time:      time.Time{},
+			Precision: "m",
 			Fields: map[string]interface{}{
 				"people": count,
 				"max":    max,
@@ -56,7 +64,7 @@ func Write(gym string, count int, max int) (resp *influx.Response, err error) {
 		Database:        os.Getenv("PURE_INFLUX_DATABASE"),
 		RetentionPolicy: os.Getenv("PURE_INFLUX_RETENTION"),
 		Precision:       "m",
-		Time:            time.Now(),
+		Time:            t,
 	}
 
 	client, err := getClient()
