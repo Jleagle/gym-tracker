@@ -25,26 +25,13 @@ import (
 func webserver() {
 
 	app := fiber.New()
-	app.Use(cors.New(cors.Config{
-		// AllowOrigins: "https://pgt.jimeagle.com/",
-		AllowMethods: "GET",
-		AllowHeaders: "Origin, Content-Type, Accept",
-	}))
-	app.Use(cache.New(cache.Config{
-		Expiration:   10 * time.Minute,
-		CacheControl: true,
-	}))
-	app.Use(compress.New(compress.Config{
-		Level: compress.LevelBestSpeed, // 1
-	}))
-	app.Use(filesystem.New(filesystem.Config{
-		Root:   http.Dir("./public"),
-		MaxAge: 3600,
-	}))
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World 👋!")
-	})
+	// Middleware
+	app.Use(cache.New(cache.Config{Expiration: time.Minute, CacheControl: true}))
+	app.Use(compress.New(compress.Config{Level: compress.LevelBestSpeed}))
+
+	// Routes
+	app.Get("/", rootHandler)
 	app.Get("/heatmap.json", heatmapHandler)
 
 	err := app.Listen("0.0.0.0:" + os.Getenv("PURE_PORT"))
