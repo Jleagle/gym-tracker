@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/Jleagle/pure-gym-tracker/helpers"
 	"github.com/Jleagle/pure-gym-tracker/influx"
 	influxquerybuilder "github.com/benjamin658/influx-query-builder"
 	"github.com/gofiber/fiber/v2"
@@ -25,6 +24,7 @@ func webserver() {
 	// Routes
 	app.Get("/", rootHandler)
 	app.Get("/heatmap.json", heatmapHandler)
+	app.Get("/people.json", peopleHandler)
 	app.Post("/submit", submitHandler)
 
 	// Serve
@@ -38,26 +38,70 @@ func rootHandler(c *fiber.Ctx) error {
 	return c.SendString("OK")
 }
 
+func peopleHandler(c *fiber.Ctx) error {
+
+	var query = `SELECT mean("people") AS "mean_people", mean("pcnt") AS "mean_pcnt" FROM "PureGym"."alltime"."gyms" `
+
+	switch c.Query("range") {
+	case "year":
+		query += "WHERE time > now()-365d GROUP BY yearDay"
+	case "month":
+		query += "WHERE time > now()-365d GROUP BY monthDay"
+	case "week":
+		query += "WHERE time > now()-365d GROUP BY weekDay"
+	default:
+		return nil
+	}
+
+	query += " FILL(0)"
+
+	resp, err := influx.Read(query)
+	if err != nil {
+		logger.Error("failed to query influx", zap.Error(err))
+	}
+
+	var ret = map[string]map[string][]json.Number{}
+
+	for _, result := range resp.Results {
+		for _, series := range result.Series {
+			for _, tagValue := range series.Tags {
+				for kk, column := range series.Columns {
+					if kk > 0 {
+
+						if ret[tagValue] == nil {
+							ret[tagValue] = map[string][]json.Number{}
+						}
+						if ret[tagValue][column] == nil {
+							ret[tagValue][column] = []json.Number{}
+						}
+						ret[tagValue][column] = append(ret[tagValue][column], series.Values[0][kk].(json.Number))
+					}
+				}
+			}
+		}
+	}
+
+	return c.JSON(ret)
+}
+
 func heatmapHandler(c *fiber.Ctx) error {
 
-	q := influxquerybuilder.New().
-		Select(`max("max") AS max_max`).
-		Select(`max("pcnt") AS max_pcnt`).
-		Select(`max("people") AS max_people`).
-		From(`PureGym"."alltime"."gyms`).
-		Where(`time`, `>`, `now()-1d`).
-		Where(`gym`, `=`, `Fareham`).
-		GroupByTime(influxquerybuilder.NewDuration().Minute(10)).
-		Fill("null")
+	q := influxquerybuilder.New()
+	q.Select(`max("max") AS max_max`)
+	q.Select(`max("pcnt") AS max_pcnt`)
+	q.Select(`max("people") AS max_people`)
+	q.From(`PureGym"."alltime"."gyms`)
+	q.Where(`time`, `>`, `now()-1d`)
+	q.Where(`gym`, `=`, `Fareham`)
+	q.GroupByTime(influxquerybuilder.NewDuration().Minute(10))
+	q.Fill("0")
 
 	resp, err := influx.Read(q.Build())
 	if err != nil {
 		logger.Error("failed to query influx", zap.Error(err))
 	}
 
-	var hc = map[string][][]interface{}{}
-
-	var data = map[time.Weekday]map[int][]float64{}
+	var hc = map[string][]int{}
 
 	if len(resp.Results) > 0 && len(resp.Results[0].Series) > 0 {
 
@@ -68,31 +112,21 @@ func heatmapHandler(c *fiber.Ctx) error {
 
 				for _, vv := range series.Values {
 
-					t, err := time.Parse(time.RFC3339, vv[0].(string))
+					_, err := time.Parse(time.RFC3339, vv[0].(string))
 					if err != nil {
 						logger.Error("casting", zap.Error(err))
 						continue
 					}
 
-					val, err := vv[k].(json.Number).Float64()
+					_, err = vv[k].(json.Number).Float64()
 					if err != nil {
 						logger.Error("casting", zap.Error(err))
 						continue
 					}
 
-					if data[t.Weekday()] == nil {
-						data[t.Weekday()] = map[int][]float64{}
-					}
-
-					data[t.Weekday()][t.Hour()] = append(data[t.Weekday()][t.Hour()], val)
+					hc["x"] = append(hc["x"], 1)
 				}
 			}
-		}
-	}
-
-	for day, hours := range data {
-		for hour, vals := range hours {
-			hc["max_pcnt"] = append(hc["max_pcnt"], []interface{}{hour, day, helpers.Max(vals...)})
 		}
 	}
 
