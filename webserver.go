@@ -34,7 +34,8 @@ func webserver() {
 	app.Get("/", rootHandler)
 	app.Get("/heatmap.json", heatmapHandler)
 
-	err := app.Listen("0.0.0.0:" + os.Getenv("PURE_PORT"))
+	// Serve
+	err := app.Listen("0.0.0.0:" + os.Getenv("PURE_PORT_BACKEND"))
 	if err != nil {
 		logger.Error("serving webserver", zap.Error(err))
 	}
