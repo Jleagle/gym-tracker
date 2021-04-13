@@ -85,7 +85,7 @@ func peopleHandler(c *fiber.Ctx) error {
 
 func heatmapHandler(c *fiber.Ctx) error {
 
-	resp, err := influx.Read(`SELECT max("max") AS "max_max",max("pcnt") AS "max_pcnt",max("people") AS "max_people" ` +
+	resp, err := influx.Read(`SELECT mean("max") AS "mean_max", mean("pcnt") AS "mean_pcnt", mean("people") AS "mean_people" ` +
 		`FROM "PureGym"."alltime"."gyms" ` +
 		`WHERE "gym" = 'Fareham' ` +
 		`GROUP BY time(10m) ` +
