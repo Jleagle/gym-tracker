@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	"os"
 	"time"
 
+	"github.com/Jleagle/pure-gym-tracker/config"
 	"github.com/Jleagle/pure-gym-tracker/influx"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
@@ -27,7 +27,7 @@ func webserver() {
 	app.Post("/submit", submitHandler)
 
 	// Serve
-	err := app.Listen("0.0.0.0:" + os.Getenv("PURE_PORT_BACKEND"))
+	err := app.Listen("0.0.0.0:" + config.PortBackend)
 	if err != nil {
 		logger.Error("serving webserver", zap.Error(err))
 	}

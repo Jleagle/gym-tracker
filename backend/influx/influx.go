@@ -2,11 +2,11 @@ package influx
 
 import (
 	"net/url"
-	"os"
 	"strconv"
 	"sync"
 	"time"
 
+	"github.com/Jleagle/pure-gym-tracker/config"
 	influx "github.com/influxdata/influxdb1-client"
 )
 
@@ -25,15 +25,15 @@ func getClient() (*influx.Client, error) {
 
 	if client == nil {
 
-		host, err = url.Parse(os.Getenv("PURE_INFLUX_URL"))
+		host, err = url.Parse(config.InfluxURL)
 		if err != nil {
 			return nil, err
 		}
 
 		client, err = influx.NewClient(influx.Config{
 			URL:      *host,
-			Username: os.Getenv("PURE_INFLUX_USER"),
-			Password: os.Getenv("PURE_INFLUX_PASS"),
+			Username: config.InfluxUser,
+			Password: config.InfluxPass,
 		})
 	}
 
@@ -61,8 +61,8 @@ func Write(gym string, count int, max int) (resp *influx.Response, err error) {
 				"pcnt":   (float64(count) / float64(max)) * 100,
 			},
 		}},
-		Database:        os.Getenv("PURE_INFLUX_DATABASE"),
-		RetentionPolicy: os.Getenv("PURE_INFLUX_RETENTION"),
+		Database:        config.InfluxDatabase,
+		RetentionPolicy: config.InfluxRetention,
 		Precision:       "m",
 		Time:            t,
 	}
@@ -84,8 +84,8 @@ func Read(query string) (resp *influx.Response, err error) {
 
 	resp, err = client.Query(influx.Query{
 		Command:         query,
-		Database:        os.Getenv("PURE_INFLUX_DATABASE"),
-		RetentionPolicy: os.Getenv("PURE_INFLUX_RETENTION"),
+		Database:        config.InfluxDatabase,
+		RetentionPolicy: config.InfluxRetention,
 	})
 
 	return resp, err

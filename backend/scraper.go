@@ -2,11 +2,11 @@ package main
 
 import (
 	"context"
-	"os"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/Jleagle/pure-gym-tracker/config"
 	"github.com/Jleagle/pure-gym-tracker/influx"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
@@ -127,12 +127,12 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 
 				logger.Info("Logging in")
 
-				err = chromedp.SendKeys("input[name=username]", os.Getenv("PURE_USER")).Do(ctx)
+				err = chromedp.SendKeys("input[name=username]", config.User).Do(ctx)
 				if err != nil {
 					return err
 				}
 
-				err = chromedp.SendKeys("input[name=password]", os.Getenv("PURE_PASS")).Do(ctx)
+				err = chromedp.SendKeys("input[name=password]", config.Pass).Do(ctx)
 				if err != nil {
 					return err
 				}
