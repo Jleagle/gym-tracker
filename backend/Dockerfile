@@ -10,5 +10,4 @@ WORKDIR /root/
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get -y install tini
 COPY --from=build-env /root/puregym-tracker ./
-COPY ./assets ./assets
 ENTRYPOINT ["tini", "--", "/root/puregym-tracker"]
