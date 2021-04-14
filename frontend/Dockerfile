@@ -2,7 +2,7 @@
 FROM node:alpine AS builder
 WORKDIR /app
 COPY . .
-RUN npm run build
+RUN yarn install && yarn build
 
 # Production image, copy all the files and run next
 FROM node:alpine AS runner
