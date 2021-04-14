@@ -20,5 +20,6 @@
     "dev": "next dev -p 9032",
     "build": "next build",
     "start": "next start -p 9032"
-  }
+  },
+  "license": "GNU General Public License v3.0"
 }
