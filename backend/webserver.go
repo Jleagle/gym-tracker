@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/Jleagle/pure-gym-tracker/config"
-	"github.com/Jleagle/pure-gym-tracker/influx"
+	"github.com/Jleagle/puregym-tracker/config"
+	"github.com/Jleagle/puregym-tracker/influx"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"

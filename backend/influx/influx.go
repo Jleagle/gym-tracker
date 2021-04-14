@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Jleagle/pure-gym-tracker/config"
+	"github.com/Jleagle/puregym-tracker/config"
 	influx "github.com/influxdata/influxdb1-client"
 )
 

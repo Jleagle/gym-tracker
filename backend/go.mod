@@ -1,4 +1,4 @@
-module github.com/Jleagle/pure-gym-tracker
+module github.com/Jleagle/puregym-tracker
 
 go 1.15
 
