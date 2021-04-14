@@ -53,7 +53,7 @@ func Write(gym string, count int, max int) (resp *influx.Response, err error) {
 				"monthDay": strconv.Itoa(t.Day()),
 				"weekDay":  strconv.Itoa(int(t.Weekday())),
 			},
-			Time:      time.Time{},
+			Time:      t,
 			Precision: "m",
 			Fields: map[string]interface{}{
 				"people": count,
