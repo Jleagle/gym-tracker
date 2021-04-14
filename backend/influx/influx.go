@@ -1,6 +1,7 @@
 package influx
 
 import (
+	"math"
 	"net/url"
 	"strconv"
 	"sync"
@@ -59,7 +60,7 @@ func Write(gym string, count int, max int) (resp *influx.Response, err error) {
 			Fields: map[string]interface{}{
 				"people": count,
 				"max":    max,
-				"pcnt":   (float64(count) / float64(max)) * 100,
+				"pcnt":   math.Round((float64(count)/float64(max))*100*100) / 100, // Percent, rounded
 			},
 		}},
 		Database:        config.InfluxDatabase,

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"math"
 	"strconv"
 	"strings"
 	"time"
@@ -50,7 +51,7 @@ func trigger() {
 		return
 	}
 
-	pct := float64(now) / float64(max)
+	pct := math.Round((float64(now)/float64(max))*100*100) / 100
 
 	logger.Info("members", zap.Int("now", now), zap.Int("max", max), zap.Float64("pct", pct), zap.String("town", town))
 
