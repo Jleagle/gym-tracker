@@ -68,7 +68,7 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 
 			if len(cookies) > 0 {
 
-				logger.Info("Setting cookies", zap.Int("count", len(cookies)))
+				// logger.Info("Setting cookies", zap.Int("count", len(cookies)))
 
 				for _, cookie := range cookies {
 
@@ -105,7 +105,7 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 
 			if len(cookieNodes) > 0 {
 
-				logger.Info("Submitting cookie popup")
+				// logger.Info("Submitting cookie popup")
 
 				_, exp, err := runtime.Evaluate("CookieInformation.submitAllCategories();").Do(ctx)
 				if err != nil {
@@ -148,7 +148,7 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 		chromedp.WaitVisible("#people_in_gym"),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 
-			logger.Info("Logged in, taking cookies")
+			// logger.Info("Logged in, taking cookies")
 
 			var err error
 			cookies, err = network.GetAllCookies().Do(ctx)
