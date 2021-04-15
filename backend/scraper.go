@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"math"
+	"os"
+	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -15,6 +18,12 @@ import (
 	"github.com/chromedp/chromedp"
 	"github.com/chromedp/chromedp/device"
 	"go.uber.org/zap"
+)
+
+var (
+	baseContext  context.Context
+	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
+	cookies      []*network.Cookie
 )
 
 func trigger() {
@@ -30,6 +39,10 @@ func trigger() {
 	peopleString, town, err := loginAndCheckMembers(ctx)
 	if err != nil {
 		logger.Error("running chromedp", zap.Error(err))
+		return
+	}
+
+	if peopleString == "10 or fewer people" {
 		return
 	}
 

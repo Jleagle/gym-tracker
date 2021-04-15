@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"regexp"
 
 	"github.com/chromedp/cdproto/network"
 	"github.com/robfig/cron/v3"
@@ -10,9 +9,7 @@ import (
 )
 
 var (
-	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)?\s?([0-9,]{1,4})?`)
-	cookies      []*network.Cookie
-	logger       *zap.Logger
+	logger *zap.Logger
 )
 
 func main() {
