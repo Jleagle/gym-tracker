@@ -3,8 +3,6 @@ package main
 import (
 	"context"
 	"math"
-	"os"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -26,14 +24,24 @@ var (
 	cookies      []*network.Cookie
 )
 
+func init() {
+
+	// create a new browser
+	baseContext, _ = chromedp.NewContext(context.Background())
+
+	// start the browser without a timeout
+	err := chromedp.Run(baseContext)
+	if err != nil {
+		logger.Error("failed to start browser", zap.Error(err))
+	}
+}
+
 func trigger() {
 
-	ctx := context.Background()
-
-	ctx, cancel1 := chromedp.NewContext(ctx)
+	ctx, cancel1 := context.WithTimeout(baseContext, 30*time.Second)
 	defer cancel1()
 
-	ctx, cancel2 := context.WithTimeout(ctx, 30*time.Second)
+	ctx, cancel2 := chromedp.NewContext(ctx)
 	defer cancel2()
 
 	peopleString, town, err := loginAndCheckMembers(ctx)

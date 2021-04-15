@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/chromedp/cdproto/network"
+	"github.com/Jleagle/puregym-tracker/config"
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
 )
