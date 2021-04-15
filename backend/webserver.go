@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"sync"
 	"time"
 
 	"github.com/Jleagle/puregym-tracker/config"
@@ -30,6 +31,11 @@ func webserver() {
 	if err != nil {
 		logger.Error("serving webserver", zap.Error(err))
 	}
+
+	// Wait, in case app stops listening
+	wg := sync.WaitGroup{}
+	wg.Add(1)
+	wg.Wait()
 }
 
 func rootHandler(c *fiber.Ctx) error {
