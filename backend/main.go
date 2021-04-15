@@ -17,6 +17,18 @@ var (
 
 func main() {
 
+	if config.PortBackend == "" ||
+		config.User == "" ||
+		config.Pass == "" ||
+		config.InfluxURL == "" ||
+		config.InfluxUser == "" ||
+		config.InfluxPass == "" ||
+		config.InfluxDatabase == "" ||
+		config.InfluxRetention == "" {
+		logger.Error("missing configs")
+		return
+	}
+
 	// Logger
 	logger, _ = zap.NewDevelopment()
 
