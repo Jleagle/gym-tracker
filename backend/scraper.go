@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"math"
+	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -41,8 +43,24 @@ func trigger() {
 	ctx, cancel1 := context.WithTimeout(baseContext, 30*time.Second)
 	defer cancel1()
 
-	ctx, cancel2 := chromedp.NewContext(ctx)
+	ex, err := os.Executable()
+	if err != nil {
+		logger.Error("failed to find exe path", zap.Error(err))
+		return
+	}
+
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.DisableGPU,
+		chromedp.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"),
+		chromedp.UserDataDir(filepath.Dir(ex)+"/user-data"),
+		chromedp.WindowSize(1920, 1080),
+	)
+
+	ctx, cancel2 := chromedp.NewExecAllocator(ctx, opts...)
 	defer cancel2()
+
+	ctx, cancel3 := chromedp.NewContext(ctx)
+	defer cancel3()
 
 	peopleString, town, err := loginAndCheckMembers(ctx)
 	if err != nil {
