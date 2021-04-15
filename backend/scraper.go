@@ -48,7 +48,7 @@ func trigger() {
 
 	members := membersRegex.FindStringSubmatch(peopleString)
 	if len(members) != 4 {
-		logger.Error("finding count failed", zap.String("string", peopleString))
+		logger.Error("parsing count failed", zap.String("string", peopleString))
 		return
 	}
 
