@@ -68,8 +68,8 @@ const options = {
     }]
 }
 
-function LineChart() {
+function BarChart() {
     return (<HighchartsReact highcharts={Highcharts} options={options}/>);
 }
 
-export default LineChart
+export default BarChart
