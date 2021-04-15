@@ -31,7 +31,8 @@ const chartOptions = {
 
 function HeatMap({data}) {
 
-    chartOptions.series[0].data = data.max_pcnt;
+    // console.log(data);
+    // chartOptions.series[0].data = data.max_pcnt;
 
     console.log(data);
 
