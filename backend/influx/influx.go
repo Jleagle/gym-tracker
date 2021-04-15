@@ -1,7 +1,6 @@
 package influx
 
 import (
-	"math"
 	"net/url"
 	"strconv"
 	"sync"
@@ -41,11 +40,16 @@ func getClient() (*influx.Client, error) {
 	return client, err
 }
 
-func Write(gym string, count int, max int) (resp *influx.Response, err error) {
+func Write(gym string, count int, max int, percent float64) (resp *influx.Response, err error) {
+
+	client, err := getClient()
+	if err != nil {
+		return nil, err
+	}
 
 	t := time.Now()
 
-	batch := influx.BatchPoints{
+	return client.Write(influx.BatchPoints{
 		Points: []influx.Point{{
 			Measurement: "gyms",
 			Tags: map[string]string{
@@ -60,21 +64,14 @@ func Write(gym string, count int, max int) (resp *influx.Response, err error) {
 			Fields: map[string]interface{}{
 				"people": count,
 				"max":    max,
-				"pcnt":   math.Round((float64(count)/float64(max))*100*100) / 100, // Percent, rounded
+				"pcnt":   percent,
 			},
 		}},
 		Database:        config.InfluxDatabase,
 		RetentionPolicy: config.InfluxRetention,
 		Precision:       "m",
 		Time:            t,
-	}
-
-	client, err := getClient()
-	if err != nil {
-		return nil, err
-	}
-
-	return client.Write(batch)
+	})
 }
 
 func Read(query string) (resp *influx.Response, err error) {

@@ -66,9 +66,9 @@ func trigger() {
 
 	pct := math.Round((float64(now)/float64(max))*100*100) / 100
 
-	logger.Info("members", zap.Int("now", now), zap.Int("max", max), zap.Float64("pct", pct), zap.String("town", town))
+	logger.Info("members", zap.String("town", town), zap.Int("max", max), zap.Int("now", now), zap.Float64("pct", pct))
 
-	_, err = influx.Write(town, now, max)
+	_, err = influx.Write(town, now, max, pct)
 	if err != nil {
 		logger.Error("sending to influx failed", zap.Error(err))
 	}
