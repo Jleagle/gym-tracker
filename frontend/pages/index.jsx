@@ -23,13 +23,25 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
         <div className="container">
             <div className="row">
                 <div className="col">
-                    <h1 className="mt-4">PureGym Tracker</h1>
+                    {/*<h1 className="mt-4">PureGym Tracker</h1>*/}
+
+                    <h2>Last 24 hours</h2>
                     {/*<LineChart data={now}/>*/}
+
+                    <h2>By hour</h2>
                     {/*<BarChart data={hour}/>*/}
                     {/*<HeatMap data={weekHour}/>*/}
+
+                    <h2>By day of the week</h2>
                     {/*<BarChart data={weekDay}/>*/}
+
+                    <h2>By day of the month</h2>
                     {/*<BarChart data={monthDay}/>*/}
+
+                    <h2>By day of the year</h2>
                     <BarChart data={yearDay}/>
+
+                    <footer>Footer</footer>
                 </div>
             </div>
         </div>
