@@ -17,7 +17,7 @@ func webserver() error {
 	app := fiber.New()
 
 	// Middleware
-	app.Use(cache.New(cache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { logger.Info(c.OriginalURL()); return c.OriginalURL() }}))
+	app.Use(cache.New(cache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
 	app.Use(compress.New(compress.Config{Level: compress.LevelBestSpeed}))
 
 	// Routes
