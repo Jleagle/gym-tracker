@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"sync"
 	"time"
 
 	"github.com/Jleagle/puregym-tracker/config"
@@ -13,7 +12,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func webserver() {
+func webserver() error {
 
 	app := fiber.New()
 
@@ -27,15 +26,7 @@ func webserver() {
 	app.Post("/submit", submitHandler)
 
 	// Serve
-	err := app.Listen("0.0.0.0:" + config.PortBackend)
-	if err != nil {
-		logger.Error("serving webserver", zap.Error(err))
-	}
-
-	// Wait, in case app stops listening
-	wg := sync.WaitGroup{}
-	wg.Add(1)
-	wg.Wait()
+	return app.Listen("0.0.0.0:" + config.PortBackend)
 }
 
 func rootHandler(c *fiber.Ctx) error {
