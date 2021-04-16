@@ -1,4 +1,5 @@
 import "../scss/bootstrap.scss";
+import "../scss/main.scss";
 
 export default function MyApp({Component, pageProps}) {
     return <>
