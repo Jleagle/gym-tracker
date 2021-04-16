@@ -69,6 +69,7 @@ func trigger() {
 	}
 
 	if peopleString == "10 or fewer people" {
+		logger.Info("members", zap.String("town", town), zap.Int("now", 0))
 		return
 	}
 
