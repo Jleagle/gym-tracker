@@ -39,8 +39,8 @@ func main() {
 	// Update
 	trigger()
 
-	c := cron.New()
-	_, err := c.AddFunc("*/10 * * * *", trigger)
+	c := cron.New(cron.WithSeconds())
+	_, err := c.AddFunc("10 */10 * * * *", trigger)
 	if err != nil {
 		logger.Error("adding cron", zap.Error(err))
 		return
