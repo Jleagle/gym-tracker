@@ -1,6 +1,7 @@
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import moment from "moment";
 
 function BarChart({data}) {
 
@@ -16,7 +17,7 @@ function BarChart({data}) {
         },
         xAxis: {
             crosshair: true,
-            categories: Object.keys(data),
+            categories: data.map(a => moment(a.X * 1000).format("DD MMM @ HH:mm")),
         },
         yAxis: [
             {
@@ -47,11 +48,11 @@ function BarChart({data}) {
         series: [
             {
                 name: 'Members',
-                data: Object.values(data).map(a => a.members),
+                data: data.map(a => a.Y.members),
             },
             {
                 name: 'Capacity',
-                data: Object.values(data).map(a => a.percent),
+                data: data.map(a => a.Y.percent),
                 visible: false,
             }
         ]
