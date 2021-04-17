@@ -35,17 +35,23 @@ func rootHandler(c *fiber.Ctx) error {
 
 func peopleHandler(c *fiber.Ctx) error {
 
-	var groupBy = c.Query("group")
+	var ret []Col
+	var q string
 
-	switch groupBy {
+	switch groupBy := c.Query("group"); groupBy {
 	case "yearDay", "monthDay", "weekDay", "weekHour", "hour":
+
+		q = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "PureGym"."alltime"."gyms" WHERE time > now()-365d GROUP BY ` + groupBy + ` FILL(0)`
+
+	case "now":
+
+		q = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "PureGym"."alltime"."gyms" WHERE time > now()-24h GROUP BY time(10m) FILL(0)`
+
 	default:
-		return nil
+		return c.JSON(ret)
 	}
 
-	var ret = map[string]map[string][]json.Number{}
-
-	resp, err := influx.Read(`SELECT mean("people") AS "mean_people", mean("pcnt") AS "mean_pcnt" FROM "PureGym"."alltime"."gyms" WHERE time > now()-365d GROUP BY ` + groupBy + ` FILL(0)`)
+	resp, err := influx.Read(q)
 	if err != nil {
 		logger.Error("failed to query influx", zap.Error(err))
 		return c.JSON(ret)
@@ -53,19 +59,25 @@ func peopleHandler(c *fiber.Ctx) error {
 
 	for _, result := range resp.Results {
 		for _, series := range result.Series {
-			for _, tagValue := range series.Tags {
-				for kk, column := range series.Columns {
-					if kk > 0 {
+			for _, row := range series.Values {
 
-						if ret[tagValue] == nil {
-							ret[tagValue] = map[string][]json.Number{}
-						}
-						if ret[tagValue][column] == nil {
-							ret[tagValue][column] = []json.Number{}
-						}
-						ret[tagValue][column] = append(ret[tagValue][column], series.Values[0][kk].(json.Number))
+				t, err := time.Parse(time.RFC3339, row[0].(string))
+				if err != nil {
+					logger.Error("parsing time", zap.Error(err))
+				}
+
+				y := map[string]json.Number{}
+
+				for k, col := range row {
+					if k > 0 {
+						y[series.Columns[k]] = col.(json.Number)
 					}
 				}
+
+				ret = append(ret, Col{
+					X: t.Unix(),
+					Y: y,
+				})
 			}
 		}
 	}
@@ -75,4 +87,9 @@ func peopleHandler(c *fiber.Ctx) error {
 
 func submitHandler(c *fiber.Ctx) error {
 	return c.SendString("new gym")
+}
+
+type Col struct {
+	X int64
+	Y map[string]json.Number
 }
