@@ -2,12 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"strconv"
 	"time"
 
 	"github.com/Jleagle/puregym-tracker/config"
 	"github.com/Jleagle/puregym-tracker/influx"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"go.uber.org/zap"
 )
@@ -17,7 +17,7 @@ func webserver() error {
 	app := fiber.New()
 
 	// Middleware
-	app.Use(cache.New(cache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
+	// app.Use(cache.New(cache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
 	app.Use(compress.New(compress.Config{Level: compress.LevelBestSpeed}))
 
 	// Routes
@@ -35,23 +35,24 @@ func rootHandler(c *fiber.Ctx) error {
 
 func peopleHandler(c *fiber.Ctx) error {
 
-	var ret []Col
-	var q string
+	var groupBy = c.Query("group")
+	var ret = Ret{Group: groupBy}
+	var query string
 
-	switch groupBy := c.Query("group"); groupBy {
+	switch groupBy {
 	case "yearDay", "monthDay", "weekDay", "weekHour", "hour":
 
-		q = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "PureGym"."alltime"."gyms" WHERE time > now()-365d GROUP BY ` + groupBy + ` FILL(0)`
+		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "PureGym"."alltime"."gyms" WHERE time > now()-365d GROUP BY ` + groupBy + ` FILL(0)`
 
 	case "now":
 
-		q = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "PureGym"."alltime"."gyms" WHERE time > now()-24h GROUP BY time(10m) FILL(0)`
+		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "PureGym"."alltime"."gyms" WHERE time > now()-24h GROUP BY time(10m) FILL(0)`
 
 	default:
 		return c.JSON(ret)
 	}
 
-	resp, err := influx.Read(q)
+	resp, err := influx.Read(query)
 	if err != nil {
 		logger.Error("failed to query influx", zap.Error(err))
 		return c.JSON(ret)
@@ -61,23 +62,29 @@ func peopleHandler(c *fiber.Ctx) error {
 		for _, series := range result.Series {
 			for _, row := range series.Values {
 
-				t, err := time.Parse(time.RFC3339, row[0].(string))
-				if err != nil {
-					logger.Error("parsing time", zap.Error(err))
+				var x string
+
+				if groupBy == "now" {
+
+					t, err := time.Parse(time.RFC3339, row[0].(string))
+					if err != nil {
+						logger.Error("parsing time", zap.Error(err))
+					}
+
+					x = strconv.FormatInt(t.Unix(), 10)
+
+				} else {
+					x = series.Tags[groupBy]
 				}
 
 				y := map[string]json.Number{}
-
 				for k, col := range row {
 					if k > 0 {
 						y[series.Columns[k]] = col.(json.Number)
 					}
 				}
 
-				ret = append(ret, Col{
-					X: t.Unix(),
-					Y: y,
-				})
+				ret.Cols = append(ret.Cols, RetCol{X: x, Y: y})
 			}
 		}
 	}
@@ -89,7 +96,12 @@ func submitHandler(c *fiber.Ctx) error {
 	return c.SendString("new gym")
 }
 
-type Col struct {
-	X int64
+type Ret struct {
+	Group string   `json:"group"`
+	Cols  []RetCol `json:"cols"`
+}
+
+type RetCol struct {
+	X string
 	Y map[string]json.Number
 }
