@@ -32,7 +32,7 @@ func importFromChronograf() {
 
 		if len(record) == 2 {
 
-			if record[1] == "" {
+			if record[0] == "time" || record[1] == "" {
 				continue
 			}
 
