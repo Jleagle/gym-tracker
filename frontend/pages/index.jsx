@@ -5,8 +5,9 @@ import HeatMap from "../components/HeatMap";
 
 export async function getServerSideProps() {
 
-    const base = 'http://puregymtrackerback:' + process.env.PURE_PORT_BACKEND + '/people.json?group=';
-    // const base = 'https://pgt2.jimeagle.com/people.json?group=';
+    // Uncomment to test local backend
+    // const base = 'http://localhost:' + process.env.PURE_PORT_BACKEND + '/people.json?group=';
+    const base = 'https://pgt2.jimeagle.com/people.json?group=';
 
     let [yearDay, monthDay, weekDay, weekHour, hour, now] = await Promise.all([
         fetch(base + 'yearDay').then(response => response.json()),
