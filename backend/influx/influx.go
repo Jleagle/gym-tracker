@@ -40,14 +40,12 @@ func getClient() (*influx.Client, error) {
 	return client, err
 }
 
-func Write(gym string, count int, max int, percent float64) (resp *influx.Response, err error) {
+func Write(gym string, count int, max int, percent float64, t time.Time) (resp *influx.Response, err error) {
 
 	client, err := getClient()
 	if err != nil {
 		return nil, err
 	}
-
-	t := time.Now()
 
 	return client.Write(influx.BatchPoints{
 		Points: []influx.Point{{
