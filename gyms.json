@@ -1,0 +1,875 @@
+[
+  {
+    "url": "aberdeen-kittybrewster"
+  },
+  {
+    "url": "aberdeen-rubislaw"
+  },
+  {
+    "url": "aberdeen-shiprow"
+  },
+  {
+    "url": "aberdeen-wellington-circle"
+  },
+  {
+    "url": "aintree"
+  },
+  {
+    "url": "aldershot-westgate-retail-park"
+  },
+  {
+    "url": "altrincham"
+  },
+  {
+    "url": "andover"
+  },
+  {
+    "url": "ashford-warren-retail-park"
+  },
+  {
+    "url": "ashton-under-lyne"
+  },
+  {
+    "url": "aylesbury"
+  },
+  {
+    "url": "banbury-cross-retail-park"
+  },
+  {
+    "url": "bangor-northern-ireland"
+  },
+  {
+    "url": "barnstaple"
+  },
+  {
+    "url": "basildon"
+  },
+  {
+    "url": "bath-spring-wharf"
+  },
+  {
+    "url": "bedford"
+  },
+  {
+    "url": "belfast-adelaide-street"
+  },
+  {
+    "url": "belfast-boucher-road"
+  },
+  {
+    "url": "belfast-st-annes-square"
+  },
+  {
+    "url": "bicester"
+  },
+  {
+    "url": "billericay"
+  },
+  {
+    "url": "birmingham-arcadian-centre"
+  },
+  {
+    "url": "birmingham-beaufort-park"
+  },
+  {
+    "url": "birmingham-city-centre"
+  },
+  {
+    "url": "birmingham-longbridge"
+  },
+  {
+    "url": "birmingham-maypole"
+  },
+  {
+    "url": "birmingham-snow-hill-plaza"
+  },
+  {
+    "url": "birmingham-west"
+  },
+  {
+    "url": "blackburn-the-mall"
+  },
+  {
+    "url": "bletchley"
+  },
+  {
+    "url": "borehamwood"
+  },
+  {
+    "url": "bournemouth"
+  },
+  {
+    "url": "bournemouth-mallard-road-retail-park"
+  },
+  {
+    "url": "bracknell"
+  },
+  {
+    "url": "bradford-idle"
+  },
+  {
+    "url": "bradford-thornbury"
+  },
+  {
+    "url": "bridgwater"
+  },
+  {
+    "url": "brierley-hill"
+  },
+  {
+    "url": "brighton-central"
+  },
+  {
+    "url": "brighton-london-road"
+  },
+  {
+    "url": "bristol-abbey-wood-retail-park"
+  },
+  {
+    "url": "bristol-barrow-road"
+  },
+  {
+    "url": "bristol-brislington"
+  },
+  {
+    "url": "bristol-harbourside"
+  },
+  {
+    "url": "bristol-union-gate"
+  },
+  {
+    "url": "bromborough"
+  },
+  {
+    "url": "bromsgrove-retail-park"
+  },
+  {
+    "url": "buckingham"
+  },
+  {
+    "url": "burgess-hill"
+  },
+  {
+    "url": "burnham"
+  },
+  {
+    "url": "bury"
+  },
+  {
+    "url": "camberley"
+  },
+  {
+    "url": "cambridge-grafton-centre"
+  },
+  {
+    "url": "cambridge-leisure-park"
+  },
+  {
+    "url": "canterbury-riverside"
+  },
+  {
+    "url": "canterbury-sturry-road"
+  },
+  {
+    "url": "cardiff-bay"
+  },
+  {
+    "url": "cardiff-central"
+  },
+  {
+    "url": "cardiff-gate"
+  },
+  {
+    "url": "chatham"
+  },
+  {
+    "url": "chelmsford-meadows"
+  },
+  {
+    "url": "chester"
+  },
+  {
+    "url": "colchester-retail-park"
+  },
+  {
+    "url": "colne"
+  },
+  {
+    "url": "corby"
+  },
+  {
+    "url": "coventry-bishop-street"
+  },
+  {
+    "url": "coventry-skydome"
+  },
+  {
+    "url": "coventry-warwickshire-shopping-park"
+  },
+  {
+    "url": "crayford"
+  },
+  {
+    "url": "denton"
+  },
+  {
+    "url": "derby"
+  },
+  {
+    "url": "derry-londonderry"
+  },
+  {
+    "url": "didcot"
+  },
+  {
+    "url": "dudley-tipton"
+  },
+  {
+    "url": "dundee"
+  },
+  {
+    "url": "dunfermline"
+  },
+  {
+    "url": "east-grinstead"
+  },
+  {
+    "url": "east-kilbride"
+  },
+  {
+    "url": "edinburgh-exchange-crescent"
+  },
+  {
+    "url": "edinburgh-fort-kinnaird"
+  },
+  {
+    "url": "edinburgh-ocean-terminal"
+  },
+  {
+    "url": "edinburgh-quartermile"
+  },
+  {
+    "url": "edinburgh-waterfront"
+  },
+  {
+    "url": "edinburgh-west"
+  },
+  {
+    "url": "epsom"
+  },
+  {
+    "url": "evesham"
+  },
+  {
+    "url": "exeter-bishops-court"
+  },
+  {
+    "url": "exeter-fore-street"
+  },
+  {
+    "url": "fareham"
+  },
+  {
+    "url": "folkestone"
+  },
+  {
+    "url": "gateshead"
+  },
+  {
+    "url": "glasgow-bath-street"
+  },
+  {
+    "url": "glasgow-charing-cross"
+  },
+  {
+    "url": "glasgow-clydebank"
+  },
+  {
+    "url": "glasgow-hope-street"
+  },
+  {
+    "url": "glasgow-robroyston"
+  },
+  {
+    "url": "glasgow-shawlands"
+  },
+  {
+    "url": "glasgow-silverburn"
+  },
+  {
+    "url": "glossop"
+  },
+  {
+    "url": "gloucester-retail-park"
+  },
+  {
+    "url": "gravesend"
+  },
+  {
+    "url": "greenwich-movement"
+  },
+  {
+    "url": "grimsby"
+  },
+  {
+    "url": "halifax"
+  },
+  {
+    "url": "harlow"
+  },
+  {
+    "url": "harrogate"
+  },
+  {
+    "url": "haverhill"
+  },
+  {
+    "url": "hednesford-cannock"
+  },
+  {
+    "url": "hemel-hempstead"
+  },
+  {
+    "url": "hereford"
+  },
+  {
+    "url": "hitchin"
+  },
+  {
+    "url": "hull-anlaby"
+  },
+  {
+    "url": "ipswich-buttermarket"
+  },
+  {
+    "url": "kirkcaldy"
+  },
+  {
+    "url": "leamington-spa"
+  },
+  {
+    "url": "leeds-bramley"
+  },
+  {
+    "url": "leeds-city-centre-north"
+  },
+  {
+    "url": "leeds-city-centre-south"
+  },
+  {
+    "url": "leeds-hunslet"
+  },
+  {
+    "url": "leeds-kirkstall-bridge"
+  },
+  {
+    "url": "leeds-regent-street"
+  },
+  {
+    "url": "leeds-thorpe-park"
+  },
+  {
+    "url": "leicester-st-georges-way"
+  },
+  {
+    "url": "leicester-walnut-street"
+  },
+  {
+    "url": "lichfield"
+  },
+  {
+    "url": "lincoln"
+  },
+  {
+    "url": "lisburn"
+  },
+  {
+    "url": "liverpool-brunswick"
+  },
+  {
+    "url": "liverpool-central"
+  },
+  {
+    "url": "livingston"
+  },
+  {
+    "url": "london-acton"
+  },
+  {
+    "url": "london-aldgate"
+  },
+  {
+    "url": "london-bank"
+  },
+  {
+    "url": "london-bayswater"
+  },
+  {
+    "url": "london-beckton"
+  },
+  {
+    "url": "london-bermondsey"
+  },
+  {
+    "url": "london-borough"
+  },
+  {
+    "url": "london-bow-wharf"
+  },
+  {
+    "url": "london-bromley"
+  },
+  {
+    "url": "london-camberwell-southampton-way"
+  },
+  {
+    "url": "london-camden"
+  },
+  {
+    "url": "london-canary-wharf"
+  },
+  {
+    "url": "london-charlton"
+  },
+  {
+    "url": "london-clapham"
+  },
+  {
+    "url": "london-colindale"
+  },
+  {
+    "url": "london-crouch-end"
+  },
+  {
+    "url": "london-croydon"
+  },
+  {
+    "url": "london-east-india-dock"
+  },
+  {
+    "url": "london-east-sheen"
+  },
+  {
+    "url": "london-edgware"
+  },
+  {
+    "url": "london-enfield"
+  },
+  {
+    "url": "london-farringdon"
+  },
+  {
+    "url": "london-finchley"
+  },
+  {
+    "url": "london-finsbury-park"
+  },
+  {
+    "url": "london-fulham"
+  },
+  {
+    "url": "london-great-portland-street"
+  },
+  {
+    "url": "london-greenwich"
+  },
+  {
+    "url": "london-hammersmith-palais"
+  },
+  {
+    "url": "london-hayes"
+  },
+  {
+    "url": "london-highgate"
+  },
+  {
+    "url": "london-holborn"
+  },
+  {
+    "url": "london-holloway-road"
+  },
+  {
+    "url": "london-ilford"
+  },
+  {
+    "url": "london-kidbrooke-village"
+  },
+  {
+    "url": "london-lambeth"
+  },
+  {
+    "url": "london-lewisham"
+  },
+  {
+    "url": "london-leytonstone"
+  },
+  {
+    "url": "london-limehouse"
+  },
+  {
+    "url": "london-marylebone"
+  },
+  {
+    "url": "london-monument"
+  },
+  {
+    "url": "london-muswell-hill"
+  },
+  {
+    "url": "london-north-finchley"
+  },
+  {
+    "url": "london-orpington-central"
+  },
+  {
+    "url": "london-oval"
+  },
+  {
+    "url": "london-park-royal"
+  },
+  {
+    "url": "london-piccadilly"
+  },
+  {
+    "url": "london-putney"
+  },
+  {
+    "url": "london-shoreditch"
+  },
+  {
+    "url": "london-south-kensington"
+  },
+  {
+    "url": "london-southgate"
+  },
+  {
+    "url": "london-st-pauls"
+  },
+  {
+    "url": "london-sydenham"
+  },
+  {
+    "url": "london-tottenham-court-road"
+  },
+  {
+    "url": "london-tower-hill"
+  },
+  {
+    "url": "london-twickenham"
+  },
+  {
+    "url": "london-victoria"
+  },
+  {
+    "url": "london-wall"
+  },
+  {
+    "url": "london-wandsworth"
+  },
+  {
+    "url": "london-waterloo"
+  },
+  {
+    "url": "london-wembley"
+  },
+  {
+    "url": "london-whitechapel"
+  },
+  {
+    "url": "loughborough"
+  },
+  {
+    "url": "luton-and-dunstable"
+  },
+  {
+    "url": "maidstone-the-mall"
+  },
+  {
+    "url": "maldon-blackwater-retail-park"
+  },
+  {
+    "url": "manchester-bury-new-road"
+  },
+  {
+    "url": "manchester-debdale"
+  },
+  {
+    "url": "manchester-eccles"
+  },
+  {
+    "url": "manchester-exchange-quay"
+  },
+  {
+    "url": "manchester-market-street"
+  },
+  {
+    "url": "manchester-moston"
+  },
+  {
+    "url": "manchester-spinningfields"
+  },
+  {
+    "url": "manchester-stretford"
+  },
+  {
+    "url": "manchester-urban-exchange"
+  },
+  {
+    "url": "mansfield"
+  },
+  {
+    "url": "milton-keynes"
+  },
+  {
+    "url": "motherwell"
+  },
+  {
+    "url": "new-barnet"
+  },
+  {
+    "url": "newcastle-eldon-garden"
+  },
+  {
+    "url": "newcastle-longbenton"
+  },
+  {
+    "url": "newcastle-st-james"
+  },
+  {
+    "url": "newport"
+  },
+  {
+    "url": "newry"
+  },
+  {
+    "url": "newtownabbey"
+  },
+  {
+    "url": "northampton-central"
+  },
+  {
+    "url": "northampton-weston-favell"
+  },
+  {
+    "url": "northolt"
+  },
+  {
+    "url": "northwich"
+  },
+  {
+    "url": "norwich-aylsham-road"
+  },
+  {
+    "url": "norwich-castle-mall"
+  },
+  {
+    "url": "norwich-riverside"
+  },
+  {
+    "url": "nottingham-basford"
+  },
+  {
+    "url": "nottingham-beeston"
+  },
+  {
+    "url": "nottingham-castle-marina"
+  },
+  {
+    "url": "nuneaton"
+  },
+  {
+    "url": "oldham"
+  },
+  {
+    "url": "oxford-central"
+  },
+  {
+    "url": "oxford-templars-shopping-park"
+  },
+  {
+    "url": "paisley"
+  },
+  {
+    "url": "plymouth-alexandra-road"
+  },
+  {
+    "url": "plymouth-marsh-mills"
+  },
+  {
+    "url": "poole"
+  },
+  {
+    "url": "portsmouth-commercial-road"
+  },
+  {
+    "url": "portsmouth-north-harbour"
+  },
+  {
+    "url": "preston"
+  },
+  {
+    "url": "purley"
+  },
+  {
+    "url": "rayleigh"
+  },
+  {
+    "url": "reading-basingstoke-road"
+  },
+  {
+    "url": "reading-calcot"
+  },
+  {
+    "url": "reading-caversham-road"
+  },
+  {
+    "url": "redditch"
+  },
+  {
+    "url": "rochdale"
+  },
+  {
+    "url": "romford"
+  },
+  {
+    "url": "runcorn"
+  },
+  {
+    "url": "saffron-walden"
+  },
+  {
+    "url": "salford"
+  },
+  {
+    "url": "salisbury"
+  },
+  {
+    "url": "sheffield-city-centre-south"
+  },
+  {
+    "url": "sheffield-millhouses"
+  },
+  {
+    "url": "sheffield-north"
+  },
+  {
+    "url": "southampton-bitterne"
+  },
+  {
+    "url": "southampton-central"
+  },
+  {
+    "url": "southampton-shirley"
+  },
+  {
+    "url": "southend"
+  },
+  {
+    "url": "st-albans"
+  },
+  {
+    "url": "stafford"
+  },
+  {
+    "url": "staines"
+  },
+  {
+    "url": "stevenage"
+  },
+  {
+    "url": "stirling"
+  },
+  {
+    "url": "stockport-north"
+  },
+  {
+    "url": "stockport-south"
+  },
+  {
+    "url": "stoke-trent-east"
+  },
+  {
+    "url": "stoke-trent-north"
+  },
+  {
+    "url": "sunderland"
+  },
+  {
+    "url": "sutton-coldfield"
+  },
+  {
+    "url": "sutton-times-square"
+  },
+  {
+    "url": "swindon-mannington-retail-park"
+  },
+  {
+    "url": "swindon-stratton"
+  },
+  {
+    "url": "telford"
+  },
+  {
+    "url": "tonbridge"
+  },
+  {
+    "url": "tunbridge-wells"
+  },
+  {
+    "url": "wakefield"
+  },
+  {
+    "url": "walsall"
+  },
+  {
+    "url": "walton-on-thames"
+  },
+  {
+    "url": "warrington-central"
+  },
+  {
+    "url": "warrington-north"
+  },
+  {
+    "url": "waterlooville"
+  },
+  {
+    "url": "west-bromwich"
+  },
+  {
+    "url": "west-thurrock"
+  },
+  {
+    "url": "weston-super-mare"
+  },
+  {
+    "url": "widnes"
+  },
+  {
+    "url": "wirral-bidston-moss"
+  },
+  {
+    "url": "wisbech"
+  },
+  {
+    "url": "witney"
+  },
+  {
+    "url": "woking"
+  },
+  {
+    "url": "wolverhampton-bentley-bridge"
+  },
+  {
+    "url": "wolverhampton-south"
+  },
+  {
+    "url": "worcester"
+  },
+  {
+    "url": "wrexham"
+  },
+  {
+    "url": "york"
+  }
+]
