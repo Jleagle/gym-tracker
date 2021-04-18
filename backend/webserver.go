@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"sort"
 	"strconv"
 	"time"
 
@@ -75,6 +76,11 @@ func peopleHandler(c *fiber.Ctx) error {
 
 				} else {
 					x = series.Tags[groupBy]
+
+					// Move Sunday from first to last
+					if groupBy == "weekDay" && x == "0" {
+						x = "7"
+					}
 				}
 
 				y := map[string]json.Number{}
