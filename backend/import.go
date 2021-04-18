@@ -38,7 +38,7 @@ func importFromChronograf() {
 
 			t, err := time.Parse(time.RFC3339, record[0])
 			if err != nil {
-				logger.Error("reading csv", zap.Error(err))
+				logger.Error("reading csv", zap.Error(err), zap.String("time", record[0]))
 				continue
 			}
 
@@ -57,4 +57,6 @@ func importFromChronograf() {
 			}
 		}
 	}
+
+	logger.Info("Done")
 }
