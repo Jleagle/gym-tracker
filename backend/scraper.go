@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"math"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -91,7 +90,7 @@ func trigger() {
 		return
 	}
 
-	pct := math.Round((float64(now)/float64(max))*100*100) / 100
+	pct := calculatePercent(now, max)
 
 	logger.Info("members", zap.String("town", town), zap.Int("max", max), zap.Int("now", now), zap.Float64("pct", pct))
 

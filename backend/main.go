@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math"
 	"sync"
 
 	"github.com/Jleagle/puregym-tracker/config"
@@ -65,4 +66,8 @@ func main() {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 	wg.Wait()
+}
+
+func calculatePercent(now int, max int) float64 {
+	return math.Round((float64(now)/float64(max))*100*100) / 100
 }
