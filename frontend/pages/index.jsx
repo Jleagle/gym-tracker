@@ -27,7 +27,7 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
         <div className="container">
             <div className="row">
                 <div className="col">
-                    {/*<h1 className="mt-4">PureGym Tracker</h1>*/}
+                    <h1 className="mt-4">PureGym Tracker</h1>
 
                     <h2>Last 24 hours</h2>
                     <LineChart data={now}/>
