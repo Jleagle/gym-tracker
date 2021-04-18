@@ -17,7 +17,30 @@ function BarChart({data}) {
         },
         xAxis: {
             crosshair: true,
-            categories: data.map(a => moment(a.X * 1000).format("DD MMM @ HH:mm")),
+            categories: function () {
+
+                return data.cols.map(function (a) {
+
+                    if (a.X === '') {
+                        return '';
+                    }
+
+                    switch (data.group) {
+                        case 'yearDay':
+                            return a.X;
+                        case 'monthDay':
+                            return moment(a.X * 60 * 60 * 24 * 1000).format("Do");
+                        case 'weekDay':
+                            return moment(a.X * 60 * 60 * 24 * 1000).format("dddd");
+                        case 'weekHour':
+                            return '';
+                        case 'hour':
+                            return a.X;
+                        default:
+                            return '';
+                    }
+                });
+            }(),
         },
         yAxis: [
             {
@@ -48,11 +71,11 @@ function BarChart({data}) {
         series: [
             {
                 name: 'Members',
-                data: data.map(a => a.Y.members),
+                data: data.cols.map(a => a.Y.members),
             },
             {
                 name: 'Capacity',
-                data: data.map(a => a.Y.percent),
+                data: data.cols.map(a => a.Y.percent),
                 visible: false,
             }
         ]

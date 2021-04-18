@@ -15,9 +15,12 @@ function LineChart({data}) {
         credits: {
             enabled: false,
         },
+        legend: {
+            verticalAlign: 'bottom',
+        },
         xAxis: {
             crosshair: true,
-            categories: data.map(a => moment(a.X * 1000).format("DD MMM @ HH:mm")),
+            categories: data.cols.map(a => moment(a.X * 1000).format("HH:mm")),
         },
         yAxis: [
             {
@@ -45,17 +48,14 @@ function LineChart({data}) {
                 opposite: true,
             }
         ],
-        legend: {
-            verticalAlign: 'bottom',
-        },
         series: [
             {
                 name: 'Members',
-                data: data.map(a => a.Y.members),
+                data: data.cols.map(a => a.Y.members),
             },
             {
                 name: 'Capacity',
-                data: data.map(a => a.Y.percent),
+                data: data.cols.map(a => a.Y.percent),
                 visible: false,
             }
         ],
