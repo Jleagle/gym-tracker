@@ -89,6 +89,17 @@ func peopleHandler(c *fiber.Ctx) error {
 		}
 	}
 
+	sort.SliceStable(ret.Cols, func(i, j int) bool {
+
+		i1, err1 := strconv.Atoi(ret.Cols[i].X)
+		i2, err2 := strconv.Atoi(ret.Cols[j].X)
+		if err1 == nil && err2 == nil {
+			return i1 < i2
+		}
+
+		return ret.Cols[i].X < ret.Cols[j].X
+	})
+
 	return c.JSON(ret)
 }
 
