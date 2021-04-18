@@ -5,7 +5,7 @@ import HeatMap from "../components/HeatMap";
 
 export async function getServerSideProps() {
 
-    const base = 'http://127.0.0.1:' + process.env.PURE_PORT_BACKEND + '/people.json?group=';
+    const base = 'http://localhost:' + process.env.PURE_PORT_BACKEND + '/people.json?group=';
     // const base = 'https://pgt2.jimeagle.com/people.json?group=';
 
     let [yearDay, monthDay, weekDay, weekHour, hour, now] = await Promise.all([
