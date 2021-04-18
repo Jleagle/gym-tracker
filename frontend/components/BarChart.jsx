@@ -53,6 +53,7 @@ function BarChart({data}) {
                         return this.value.toLocaleString();
                     },
                 },
+                gridLineWidth: 0,
             },
             {
                 min: 0,
