@@ -36,7 +36,7 @@ func rootHandler(c *fiber.Ctx) error {
 func peopleHandler(c *fiber.Ctx) error {
 
 	var groupBy = c.Query("group")
-	var ret = Ret{Group: groupBy}
+	var ret = Ret{Group: groupBy, Cols: []RetCol{}}
 	var query string
 
 	switch groupBy {
