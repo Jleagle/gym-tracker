@@ -1,7 +1,7 @@
 import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import moment from "moment";
+import ordinalSuffix from "../helpers/ordinal";
 
 function BarChart({data}) {
 
@@ -27,11 +27,11 @@ function BarChart({data}) {
 
                     switch (data.group) {
                         case 'yearDay':
-                            return a.X;
                         case 'monthDay':
-                            return moment(a.X * 60 * 60 * 24 * 1000).format("Do");
+                            return ordinalSuffix(a.X);
                         case 'weekDay':
-                            return moment(a.X * 60 * 60 * 24 * 1000).format("dddd");
+                            const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                            return days[a.X];
                         case 'weekHour':
                             return '';
                         case 'hour':
