@@ -1,0 +1,6 @@
+- Auto refresh line chart
+- Fix <head> tags
+- Fix heatmap not showing
+- Darker theme
+- Improve on mobile
+- Sort heatmap days
