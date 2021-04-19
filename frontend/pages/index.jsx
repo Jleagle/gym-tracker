@@ -7,7 +7,7 @@ export async function getServerSideProps() {
 
     // Uncomment to test local backend
     // const base = 'http://localhost:' + process.env.PURE_PORT_BACKEND + '/people.json?group=';
-    const base = 'https://pgt2.jimeagle.com/people.json?group=';
+    const base = 'https://gymtrackerapi.jimeagle.com/people.json?group=';
 
     let [yearDay, monthDay, weekDay, weekHour, hour, now] = await Promise.all([
         fetch(base + 'yearDay').then(response => response.json()),
