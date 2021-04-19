@@ -35,7 +35,6 @@ function HeatMap({data}) {
             }
         },
         yAxis: {
-            min: 0,
             title: {
                 text: 'Day'
             },
@@ -46,9 +45,16 @@ function HeatMap({data}) {
             },
         },
         xAxis: {
+            min: 0,
+            max: 23,
+            title: {
+                text: 'Hour'
+            },
+            type: 'category',
             labels: {
+                step: 1,
                 formatter: function () {
-                    return this.value.toLocaleString();
+                    return this.value + ':00';
                 },
             },
         },
