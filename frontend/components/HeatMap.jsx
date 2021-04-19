@@ -45,8 +45,6 @@ function HeatMap({data}) {
             },
         },
         xAxis: {
-            min: 0,
-            max: 23,
             title: {
                 text: 'Hour'
             },
