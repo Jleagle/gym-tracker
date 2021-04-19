@@ -2,6 +2,7 @@ import React from 'react'
 import BarChart from "../components/BarChart";
 import LineChart from "../components/LineChart";
 import HeatMap from "../components/HeatMap";
+import GithubCorner from "react-github-corner";
 
 export async function getServerSideProps() {
 
@@ -24,29 +25,33 @@ export async function getServerSideProps() {
 function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
 
     return (
-        <div className="container">
-            <div className="row">
-                <div className="col">
-                    <h1 className="mt-4">Gym Tracker</h1>
+        <>
+            <GithubCorner href="https://github.com/Jleagle/gym-tracker" bannerColor="#2f7ed8"/>
+            <div className="container">
+                <div className="row">
+                    <div className="col">
 
-                    <h2>Last 24 hours</h2>
-                    <LineChart data={now}/>
+                        <h1 className="mt-4">Gym Tracker</h1>
 
-                    <h2>By hour</h2>
-                    <BarChart data={hour}/>
-                    <HeatMap data={weekHour}/>
+                        <h2>Last 24 hours</h2>
+                        <LineChart data={now}/>
 
-                    <h2>By day of the week</h2>
-                    <BarChart data={weekDay}/>
+                        <h2>By hour</h2>
+                        <BarChart data={hour}/>
+                        <HeatMap data={weekHour}/>
 
-                    <h2>By day of the month</h2>
-                    <BarChart data={monthDay}/>
+                        <h2>By day of the week</h2>
+                        <BarChart data={weekDay}/>
 
-                    <h2>By day of the year</h2>
-                    <BarChart data={yearDay}/>
+                        <h2>By day of the month</h2>
+                        <BarChart data={monthDay}/>
+
+                        <h2>By day of the year</h2>
+                        <BarChart data={yearDay}/>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
