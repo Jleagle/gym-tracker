@@ -9,6 +9,7 @@ import (
 	"github.com/Jleagle/puregym-tracker/config"
 	"github.com/Jleagle/puregym-tracker/influx"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"go.uber.org/zap"
 )
@@ -18,7 +19,9 @@ func webserver() error {
 	app := fiber.New()
 
 	// Middleware
-	// app.Use(cache.New(cache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
+	if config.Environment == "PRODUCTION" {
+		app.Use(cache.New(cache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
+	}
 	app.Use(compress.New(compress.Config{Level: compress.LevelBestSpeed}))
 
 	// Routes

@@ -5,8 +5,8 @@ import (
 )
 
 var (
-	PortBackend  = os.Getenv("PURE_PORT_BACKEND")
-	PortFrontend = os.Getenv("PURE_PORT_FRONTEND")
+	Environment = os.Getenv("PURE_ENV")
+	PortBackend = os.Getenv("PURE_PORT_BACKEND")
 
 	User = os.Getenv("PURE_USER")
 	Pass = os.Getenv("PURE_PASS")
