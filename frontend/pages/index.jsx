@@ -33,6 +33,8 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
 
                         <h1 className="mt-4">Gym Tracker</h1>
 
+                        <p>Currently recording data from Fareham only, more coming soon.</p>
+
                         <h2>Last 24 hours</h2>
                         <LineChart data={now}/>
 
@@ -48,6 +50,9 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
 
                         <h2>By day of the year</h2>
                         <BarChart data={yearDay}/>
+
+                        <footer>If a gym has 10 or less members inside, it will show as 0.</footer>
+
                     </div>
                 </div>
             </div>
