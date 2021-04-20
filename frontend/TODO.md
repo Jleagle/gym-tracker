@@ -1,7 +1,4 @@
 - Auto refresh line chart
-- Fix <head> tags
-- Fix heatmap not showing
 - Improve theme, darker, fonts etc
 - Improve on mobile
-- Sort heatmap days
 - New gym form
