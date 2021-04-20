@@ -1,7 +1,6 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import HighchartsHeatmap from 'highcharts/modules/heatmap'
-import moment from 'moment'
 import { DataType } from '../types/data'
 
 interface Props {
