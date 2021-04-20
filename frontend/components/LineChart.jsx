@@ -26,6 +26,16 @@ function LineChart({data}) {
                 }
             }
         },
+        tooltip: {
+            formatter: function () {
+                switch (this.series.name) {
+                    case 'Members':
+                        return '<b>' + this.y + '</b> people at <b>' + this.x + '</b>';
+                    case 'Capacity':
+                        return '<b>' + this.y.toFixed(1) + '</b>% full at <b>' + this.x + '</b>';
+                }
+            }
+        },
         xAxis: {
             crosshair: true,
             categories: data.cols.map(a => moment(a.X * 1000).format("HH:mm")),

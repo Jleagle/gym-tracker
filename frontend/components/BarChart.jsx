@@ -8,6 +8,8 @@ if (typeof Highcharts === 'object') {
     borderRadius(Highcharts);
 }
 
+const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 function BarChart({data}) {
 
     const options = {
@@ -26,6 +28,38 @@ function BarChart({data}) {
                 borderRadiusTopRight: 5,
             },
         },
+        tooltip: {
+            formatter: function () {
+
+                let ret = '<b>' + this.y.toFixed(1) + '</b>';
+
+                switch (this.series.name) {
+                    case 'Members':
+                        ret += ' people';
+                        break;
+                    case 'Capacity':
+                        ret += '% full';
+                        break;
+                }
+
+                switch (data.group) {
+                    case 'yearDay':
+                        ret += ' on the ' + this.x + ' day'
+                        break;
+                    case 'monthDay':
+                        ret += ' on the ' + this.x
+                        break;
+                    case 'weekDay':
+                        ret += ' on ' + this.x + 's'
+                        break;
+                    case 'hour':
+                        ret += ' at ' + this.x
+                        break;
+                }
+
+                return ret + ' on average';
+            }
+        },
         xAxis: {
             crosshair: true,
             categories: function () {
@@ -41,7 +75,6 @@ function BarChart({data}) {
                         case 'monthDay':
                             return ordinalSuffix(a.X);
                         case 'weekDay':
-                            const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                             return days[a.X];
                         case 'weekHour':
                             return '';

@@ -14,6 +14,7 @@ if (typeof Highcharts === 'object') {
 const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 const HeatMap: React.FC<Props> = ({ data }) => {
+
   const heatMapData = data.cols
     .filter((a) => {
       const [y, x] = a.X.split('-')
@@ -45,14 +46,9 @@ const HeatMap: React.FC<Props> = ({ data }) => {
     },
     tooltip: {
       formatter: function () {
-        return (
-          days[this.point.y] +
-          ' @ ' +
-          this.point.x +
-          ':00 - ' +
-          this.point.value.toFixed(0) +
-          ' people'
-        )
+        return this.point.value.toFixed(1) + ' people on '
+            + days[this.point.y] + 's at '
+            + this.point.x + ':00 ' +' on average'
       },
     },
     yAxis: {
