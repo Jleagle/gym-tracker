@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Jleagle/puregym-tracker/config"
+	"github.com/Jleagle/puregym-tracker/helpers"
 	"github.com/Jleagle/puregym-tracker/influx"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
@@ -81,8 +83,8 @@ func peopleHandler(c *fiber.Ctx) error {
 					x = series.Tags[groupBy]
 
 					// Move Sunday from first to last
-					if groupBy == "weekDay" && x == "0" {
-						x = "7"
+					if strings.HasPrefix(groupBy, "week") && strings.HasPrefix(x, "0") {
+						x = helpers.ReplaceAtIndex(x, '7', 0)
 					}
 				}
 
@@ -100,13 +102,26 @@ func peopleHandler(c *fiber.Ctx) error {
 
 	sort.SliceStable(ret.Cols, func(i, j int) bool {
 
-		i1, err1 := strconv.Atoi(ret.Cols[i].X)
-		i2, err2 := strconv.Atoi(ret.Cols[j].X)
+		pieces1 := strings.Split(ret.Cols[i].X, "-")
+		pieces2 := strings.Split(ret.Cols[j].X, "-")
+
+		i1, err1 := strconv.Atoi(pieces1[0])
+		i2, err2 := strconv.Atoi(pieces2[0])
 		if err1 == nil && err2 == nil {
-			return i1 < i2
+
+			if i1 == i2 && len(pieces1) > 1 && len(pieces2) > 1 {
+
+				i1, err1 = strconv.Atoi(pieces1[1])
+				i2, err2 = strconv.Atoi(pieces2[1])
+				if err1 == nil && err2 == nil {
+					return i1 < i2 // Sort by second value
+				}
+			}
+
+			return i1 < i2 // Sort by first value
 		}
 
-		return ret.Cols[i].X < ret.Cols[j].X
+		return pieces1[0] < pieces2[0] // Alphabetically
 	})
 
 	return c.JSON(ret)

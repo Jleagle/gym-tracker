@@ -30,3 +30,9 @@ func Mean(vars ...float64) float64 {
 	}
 	return sum / count
 }
+
+func ReplaceAtIndex(in string, replacement rune, index int) string {
+	out := []rune(in)
+	out[index] = replacement
+	return string(out)
+}
