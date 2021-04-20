@@ -12,6 +12,8 @@ if (typeof Highcharts === 'object') {
   HighchartsHeatmap(Highcharts)
 }
 
+const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 const HeatMap: React.FC<Props> = ({ data }) => {
   const heatMapData = data.cols
     .filter((a) => {
@@ -44,9 +46,8 @@ const HeatMap: React.FC<Props> = ({ data }) => {
     },
     tooltip: {
       formatter: function () {
-        const day = moment(this.point.y * 60 * 60 * 24 * 1000).format('dddd')
         return (
-          day +
+          days[this.point.y] +
           ' @ ' +
           this.point.x +
           ':00 - ' +
@@ -62,14 +63,16 @@ const HeatMap: React.FC<Props> = ({ data }) => {
       },
       labels: {
         formatter: function () {
-          return moment(this.value * 60 * 60 * 24 * 1000).format('dddd')
+          return days[this.value]
         },
       },
     },
     xAxis: {
+      type: 'category',
       labels: {
+        step:1,
         formatter: function () {
-          return this.value.toLocaleString()
+          return this.value.toLocaleString() + ':00'
         },
       },
     },

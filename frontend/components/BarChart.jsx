@@ -46,7 +46,7 @@ function BarChart({data}) {
                         case 'weekHour':
                             return '';
                         case 'hour':
-                            return a.X;
+                            return a.X + ':00';
                         default:
                             return '';
                     }

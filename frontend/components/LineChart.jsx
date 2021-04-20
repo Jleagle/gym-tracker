@@ -21,6 +21,15 @@ function LineChart({data}) {
         xAxis: {
             crosshair: true,
             categories: data.cols.map(a => moment(a.X * 1000).format("HH:mm")),
+            labels: {
+                step: 1,
+                formatter: function () {
+                    if (this.value.endsWith(':00')) {
+                        return this.value
+                    }
+                    return ''
+                },
+            },
         },
         yAxis: [
             {
