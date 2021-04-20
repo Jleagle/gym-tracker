@@ -59,6 +59,7 @@ const HeatMap: React.FC<Props> = ({ data }) => {
       min: 1,
       max: 7,
       reversed: true,
+      gridLineWidth: 0,
       title: {
         text: '',
       },
@@ -69,6 +70,7 @@ const HeatMap: React.FC<Props> = ({ data }) => {
       },
     },
     xAxis: {
+      gridLineWidth: 0,
       type: 'category',
       labels: {
         step:1,
