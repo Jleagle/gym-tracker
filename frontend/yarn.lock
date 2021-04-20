@@ -886,6 +886,11 @@ he@1.2.0:
   resolved "https://registry.npmjs.org/he/-/he-1.2.0.tgz"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
+highcharts-border-radius@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/highcharts-border-radius/-/highcharts-border-radius-0.0.4.tgz#47222895dcd807d5a5038b976142a04300bc7c51"
+  integrity sha512-Hbh/4Gtn/cEc2NNwmJLXgeJ4GDZix4cCISvx/ZDERlH4na8E6wL5inOuzLANKn3WOAR3eyJnXSHN9CC0U5pt+Q==
+
 highcharts-react-official@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/highcharts-react-official/-/highcharts-react-official-3.0.0.tgz"

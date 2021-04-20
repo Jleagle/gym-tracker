@@ -2,6 +2,11 @@ import React from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import ordinalSuffix from "../helpers/ordinal";
+import borderRadius from 'highcharts-border-radius';
+
+if (typeof Highcharts === 'object') {
+    borderRadius(Highcharts);
+}
 
 function BarChart({data}) {
 
@@ -14,6 +19,12 @@ function BarChart({data}) {
         },
         credits: {
             enabled: false,
+        },
+        plotOptions: {
+            column: {
+                borderRadiusTopLeft: 5,
+                borderRadiusTopRight: 5,
+            },
         },
         xAxis: {
             crosshair: true,
