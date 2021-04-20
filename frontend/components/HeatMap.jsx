@@ -8,6 +8,9 @@ if (typeof Highcharts === 'object') {
     HighchartsHeatmap(Highcharts);
 }
 
+/**
+ * @deprecated
+ */
 function HeatMap({data}) {
 
     const options = {
