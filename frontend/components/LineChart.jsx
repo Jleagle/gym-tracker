@@ -18,6 +18,14 @@ function LineChart({data}) {
         legend: {
             verticalAlign: 'bottom',
         },
+        plotOptions: {
+            series: {
+                lineWidth: 5,
+                marker: {
+                    enabled: false
+                }
+            }
+        },
         xAxis: {
             crosshair: true,
             categories: data.cols.map(a => moment(a.X * 1000).format("HH:mm")),
