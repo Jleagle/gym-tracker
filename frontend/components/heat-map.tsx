@@ -57,9 +57,11 @@ const HeatMap: React.FC<Props> = ({ data }) => {
       },
     },
     yAxis: {
-      min: 0,
+      min: 1,
+      max: 7,
+      reversed: true,
       title: {
-        text: 'Day',
+        text: '',
       },
       labels: {
         formatter: function () {
