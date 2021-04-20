@@ -38,8 +38,10 @@ function HomePage({ yearDay, monthDay, weekDay, weekHour, hour, now }) {
             <h2>Last 24 hours</h2>
             <LineChart data={now} />
 
-            <h2>By hour</h2>
+            <h2>By hour of the day</h2>
             <BarChart data={hour} />
+
+            <h2>By hour of the week</h2>
             <HeatMap data={weekHour} />
 
             <h2>By day of the week</h2>
