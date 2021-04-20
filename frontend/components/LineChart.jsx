@@ -56,6 +56,7 @@ function LineChart({data}) {
                     },
                 },
                 opposite: true,
+                visible: false
             }
         ],
         series: [

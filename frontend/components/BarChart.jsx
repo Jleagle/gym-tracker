@@ -78,6 +78,7 @@ function BarChart({data}) {
                     },
                 },
                 opposite: true,
+                visible: false
             }
         ],
         series: [
