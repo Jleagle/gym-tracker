@@ -13,6 +13,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"go.uber.org/zap"
 )
 
@@ -25,11 +26,12 @@ func webserver() error {
 		app.Use(cache.New(cache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
 	}
 	app.Use(compress.New(compress.Config{Level: compress.LevelBestSpeed}))
+	app.Use(cors.New(cors.Config{AllowOrigins: "*", AllowMethods: "GET POST"})) // for the new gym form
 
 	// Routes
 	app.Get("/", rootHandler)
 	app.Get("/people.json", peopleHandler)
-	app.Post("/submit", submitHandler)
+	app.Post("/new-gym", newGymHandler)
 
 	// Serve
 	return app.Listen("0.0.0.0:" + config.PortBackend)
@@ -127,8 +129,11 @@ func peopleHandler(c *fiber.Ctx) error {
 	return c.JSON(ret)
 }
 
-func submitHandler(c *fiber.Ctx) error {
-	return c.SendString("new gym")
+func newGymHandler(c *fiber.Ctx) error {
+	return c.JSON(map[string]interface{}{
+		"success": 1,
+		"message": "OK",
+	})
 }
 
 type Ret struct {

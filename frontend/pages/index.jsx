@@ -3,6 +3,7 @@ import BarChart from '../components/BarChart'
 import LineChart from '../components/LineChart'
 import HeatMap from '../components/heat-map'
 import GithubCorner from 'react-github-corner'
+import Link from 'next/link'
 
 export async function getServerSideProps() {
   // Uncomment to test local backend
@@ -31,7 +32,7 @@ function HomePage({ yearDay, monthDay, weekDay, weekHour, hour, now }) {
         <div className="row">
           <div className="col">
 
-            <p>Currently recording data from Fareham only, more coming soon.</p>
+            <p>Currently recording data from Fareham only, more coming soon. <Link href="/new-gym">Add your gym</Link>.</p>
 
             <h2>Last 24 hours</h2>
             <LineChart data={now} />
