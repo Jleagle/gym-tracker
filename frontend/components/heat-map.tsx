@@ -28,6 +28,7 @@ const HeatMap: React.FC<Props> = ({data}) => {
   const options: Highcharts.Options = {
     chart: {
       type: 'heatmap',
+      height: 400,
     },
     title: {
       text: '',
@@ -82,7 +83,11 @@ const HeatMap: React.FC<Props> = ({data}) => {
     ],
   }
 
-  return <HighchartsReact highcharts={Highcharts} options={options}/>
+  return (
+    <div className="chart">
+      <HighchartsReact highcharts={Highcharts} options={options}/>
+    </div>
+  )
 }
 
 export default HeatMap

@@ -9,6 +9,7 @@ function LineChart({data}) {
     chart: {
       type: 'spline',
       marginTop: 30,
+      height: 400,
     },
     title: {
       text: '',
@@ -91,7 +92,11 @@ function LineChart({data}) {
     ],
   }
 
-  return (<HighchartsReact highcharts={Highcharts} options={options}/>)
+  return (
+    <div className="chart">
+      <HighchartsReact highcharts={Highcharts} options={options}/>
+    </div>
+  )
 }
 
 export default LineChart

@@ -16,6 +16,7 @@ function BarChart({data}) {
     chart: {
       type: 'column',
       marginTop: 30,
+      height: 400,
     },
     title: {
       text: '',
@@ -128,7 +129,11 @@ function BarChart({data}) {
     ],
   }
 
-  return (<HighchartsReact highcharts={Highcharts} options={options}/>)
+  return (
+    <div className="chart">
+      <HighchartsReact highcharts={Highcharts} options={options}/>
+    </div>
+  )
 }
 
 export default BarChart

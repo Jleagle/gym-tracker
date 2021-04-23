@@ -1,4 +1,4 @@
-body{
+body {
     background-color: #B8860BA1;
 }
 
@@ -12,9 +12,10 @@ h2 {
     margin-top: 40px;
 }
 
-[data-highcharts-chart] {
+.chart {
     height: 400px;
     border-radius: 10px;
+    overflow: hidden;
 }
 
 footer {
