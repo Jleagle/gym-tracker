@@ -8,6 +8,7 @@ function LineChart({data}) {
     const options = {
         chart: {
             type: 'spline',
+            marginTop: 30,
         },
         title: {
             text: ''

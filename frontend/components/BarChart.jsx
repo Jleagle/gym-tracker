@@ -15,6 +15,7 @@ function BarChart({data}) {
     const options = {
         chart: {
             type: 'column',
+            marginTop: 30,
         },
         title: {
             text: '',
