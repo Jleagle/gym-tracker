@@ -1,7 +1,7 @@
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import HighchartsHeatmap from 'highcharts/modules/heatmap'
-import { DataType } from '../types/data'
+import {DataType} from '../types/data'
 
 interface Props {
   data: DataType
@@ -11,19 +11,17 @@ if (typeof Highcharts === 'object') {
   HighchartsHeatmap(Highcharts)
 }
 
-const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-const HeatMap: React.FC<Props> = ({ data }) => {
+const HeatMap: React.FC<Props> = ({data}) => {
 
   const heatMapData = data.cols
     .filter((a) => {
       const [y, x] = a.X.split('-')
-
       return !!x && !!y
     })
     .map((a) => {
       const [y, x] = a.X.split('-')
-
       return [parseInt(x), parseInt(y), a.Y.members]
     })
 
@@ -47,8 +45,8 @@ const HeatMap: React.FC<Props> = ({ data }) => {
     tooltip: {
       formatter: function () {
         return this.point.value.toFixed(1) + ' people on '
-            + days[this.point.y] + 's at '
-            + this.point.x + ':00 ' +' on average'
+          + days[this.point.y] + 's at '
+          + this.point.x + ':00 ' + ' on average'
       },
     },
     yAxis: {
@@ -69,7 +67,7 @@ const HeatMap: React.FC<Props> = ({ data }) => {
       gridLineWidth: 0,
       type: 'category',
       labels: {
-        step:1,
+        step: 1,
         formatter: function () {
           return this.value.toLocaleString() + ':00'
         },
@@ -84,7 +82,7 @@ const HeatMap: React.FC<Props> = ({ data }) => {
     ],
   }
 
-  return <HighchartsReact highcharts={Highcharts} options={options} />
+  return <HighchartsReact highcharts={Highcharts} options={options}/>
 }
 
 export default HeatMap
