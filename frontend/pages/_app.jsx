@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import "../scss/bootstrap.scss";
 import "../scss/main.scss";
+import {Container} from 'react-bootstrap'
+import React from 'react'
 
 export default function MyApp({Component, pageProps}) {
     return <>
@@ -16,6 +18,9 @@ export default function MyApp({Component, pageProps}) {
             <meta name="msapplication-TileColor" content="#ffffff"/>
             <meta name="theme-color" content="#ffffff"/>
         </Head>
-        <Component {...pageProps} />
+        <Container>
+            <h1 className="mt-4">Gym Tracker</h1>
+            <Component {...pageProps} />
+        </Container>
     </>;
 };

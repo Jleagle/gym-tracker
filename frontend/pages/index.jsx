@@ -28,10 +28,8 @@ function HomePage({ yearDay, monthDay, weekDay, weekHour, hour, now }) {
         href="https://github.com/Jleagle/gym-tracker"
         bannerColor="#2f7ed8"
       />
-      <div className="container">
         <div className="row">
           <div className="col">
-            <h1 className="mt-4">Gym Tracker</h1>
 
             <p>Currently recording data from Fareham only, more coming soon.</p>
 
@@ -58,7 +56,6 @@ function HomePage({ yearDay, monthDay, weekDay, weekHour, hour, now }) {
             </footer>
           </div>
         </div>
-      </div>
     </>
   )
 }
