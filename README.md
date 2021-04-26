@@ -1,1 +1,1 @@
-# PureGym Tracker
+# Gym Tracker
