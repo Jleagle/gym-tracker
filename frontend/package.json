@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bootstrap": "^5.0.0-beta3",
+    "child_process": "^1.0.2",
     "highcharts": "^9.0.1",
     "highcharts-border-radius": "^0.0.4",
     "highcharts-react-official": "^3.0.0",

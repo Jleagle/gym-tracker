@@ -4,6 +4,7 @@ import LineChart from '../components/line-chart'
 import HeatMap from '../components/heat-map'
 import GithubCorner from 'react-github-corner'
 import Link from 'next/link'
+import ChildProcess from 'child_process'
 
 export async function getServerSideProps() {
 
@@ -19,10 +20,16 @@ export async function getServerSideProps() {
     fetch(base + 'now').then((response) => response.json()),
   ])
 
-  return {props: {yearDay, monthDay, weekDay, weekHour, hour, now}}
+  const ver = ChildProcess.execSync('git rev-list --count master').toString().trim()
+  const hash = ChildProcess.execSync('git rev-parse --verify HEAD').toString().trim().slice(0, 4)
+
+  return {props: {yearDay, monthDay, weekDay, weekHour, hour, now, ver, hash}}
 }
 
-function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
+function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now, ver, hash}) {
+
+  const github = 'https://github.com/Jleagle/gym-tracker/commit/' + hash
+
   return (
     <>
       <GithubCorner href="https://github.com/Jleagle/gym-tracker" bannerColor="#2f7ed8"/>
@@ -49,7 +56,10 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
           <h2>By day of the year</h2>
           <BarChart data={yearDay}/>
 
-          <footer>If a gym has 10 or less members inside, it will show as 0.</footer>
+          <footer>
+            If a gym has 10 or less members inside, it will show as 0.<br/>
+            <small><a href={github}>Version {ver}-{hash}</a></small>
+          </footer>
         </div>
       </div>
     </>
