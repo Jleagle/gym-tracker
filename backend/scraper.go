@@ -11,6 +11,7 @@ import (
 
 	"github.com/Jleagle/puregym-tracker/config"
 	"github.com/Jleagle/puregym-tracker/influx"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/cdproto/runtime"
@@ -198,6 +199,9 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 		chromedp.InnerHTML("#people_in_gym a", &town),
 	}
 
-	err = chromedp.Run(ctx, actions...)
-	return people, town, err
+	work := func() error {
+		return chromedp.Run(ctx, actions...)
+	}
+
+	return people, town, backoff.Retry(work, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 10))
 }
