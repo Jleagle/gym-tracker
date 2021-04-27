@@ -31,7 +31,7 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
         <div className="col">
 
           <p>
-            Currently recording data from Fareham only, more coming soon.
+            Currently recording data from Fareham only.&nbsp;
             <Link href="/new-gym">Add your gym</Link>.
           </p>
 
