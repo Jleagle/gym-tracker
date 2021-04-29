@@ -2,3 +2,4 @@
 - Improve theme, darker, fonts etc
 - Improve on mobile
 - New gym form
+- Redo Influx data in correct timezone
