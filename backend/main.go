@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"sync"
+	"time"
 
 	"github.com/Jleagle/puregym-tracker/config"
 	"github.com/robfig/cron/v3"
@@ -39,6 +40,14 @@ func main() {
 		return
 	}
 
+	// Set timezone to UK
+	loc, err := time.LoadLocation("Europe/London")
+	if err != nil {
+		logger.Error("setting timezone", zap.Error(err))
+	}
+	time.Local = loc
+
+	// Flags
 	disableScraping := flag.Bool("noscrape", false, "Disable scraping")
 	flag.Parse()
 
@@ -57,7 +66,7 @@ func main() {
 	}
 
 	// Serve JSON
-	err := webserver()
+	err = webserver()
 	if err != nil {
 		logger.Error("serving webserver", zap.Error(err))
 	}
