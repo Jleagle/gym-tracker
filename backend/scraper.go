@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"os"
+	"path"
 	"path/filepath"
 	"regexp"
 	"strconv"
@@ -101,7 +102,7 @@ func trigger() {
 	}
 }
 
-func loginAndCheckMembers(ctx context.Context) (people, town string, err error) {
+func loginAndCheckMembers(ctx context.Context) (people, gym string, err error) {
 
 	actions := []chromedp.Action{
 		network.Enable(),
@@ -196,12 +197,14 @@ func loginAndCheckMembers(ctx context.Context) (people, town string, err error) 
 			return err
 		}),
 		chromedp.InnerHTML("#people_in_gym span", &people),
-		chromedp.InnerHTML("#people_in_gym a", &town),
+		chromedp.AttributeValue("#people_in_gym a", "href", &gym, nil),
 	}
 
 	work := func() error {
 		return chromedp.Run(ctx, actions...)
 	}
 
-	return people, town, backoff.Retry(work, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 10))
+	scrape := backoff.Retry(work, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 10))
+
+	return people, path.Base(gym), scrape
 }
