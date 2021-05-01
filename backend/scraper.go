@@ -69,6 +69,11 @@ func trigger() {
 		return
 	}
 
+	if town == "" {
+		logger.Error("missing town")
+		return
+	}
+
 	if peopleString == "10 or fewer people" {
 		logger.Info("members", zap.String("town", town), zap.Int("now", 0))
 		return
