@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"sort"
 	"strconv"
 	"strings"
@@ -14,6 +15,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/syndtr/goleveldb/leveldb"
 	"go.uber.org/zap"
 )
 
@@ -129,13 +131,6 @@ func peopleHandler(c *fiber.Ctx) error {
 	return c.JSON(ret)
 }
 
-func newGymHandler(c *fiber.Ctx) error {
-	return c.JSON(map[string]interface{}{
-		"success": 1,
-		"message": "OK",
-	})
-}
-
 type Ret struct {
 	Group string   `json:"group"`
 	Cols  []RetCol `json:"cols"`
@@ -145,3 +140,88 @@ type RetCol struct {
 	X string
 	Y map[string]json.Number
 }
+
+func newGymHandler(c *fiber.Ctx) error {
+
+	var success bool
+	var err error
+
+	defer func() {
+		err = c.JSON(map[string]interface{}{"success": success, "message": err.Error()})
+		if err != nil {
+			logger.Error("returning response", zap.Error(err))
+		}
+	}()
+
+	var db *leveldb.DB
+	db, err = leveldb.OpenFile("./leveldb/", nil)
+	if err != nil {
+		logger.Error("opening database", zap.Error(err))
+		return err
+	}
+
+	//goland:noinspection GoUnhandledErrorResult
+	defer db.Close()
+
+	// Get data form request
+	var request []string
+	err = json.Unmarshal(c.Body(), &request)
+	if err != nil {
+		logger.Error("opening database", zap.Error(err))
+		return err
+	}
+
+	if len(request) != 2 {
+		err = errors.New("invalid post data")
+		logger.Error("invalid post data", zap.Error(err))
+		return err
+	}
+
+	var gym, errorString string
+	_, gym, err, errorString = loginAndCheckMembers(request[0], request[1])
+	if err != nil {
+		logger.Error("scraping", zap.Error(err))
+		return err
+	}
+
+	if errorString != "" {
+		err = errors.New(errorString)
+		return nil
+	}
+
+	var b []byte
+	b, err = db.Get([]byte(gym), nil)
+	if err != nil {
+		logger.Error("reading gym from db", zap.Error(err))
+		return err
+	}
+
+	// Update database
+	var gyms Credentials
+	err = json.Unmarshal(b, &gyms)
+	if err != nil {
+		logger.Error("unmarshaling gyms", zap.Error(err))
+		return err
+	}
+
+	gyms[request[0]] = request[1]
+
+	// Save back to file
+	b, err = json.Marshal(gyms)
+	if err != nil {
+		logger.Error("marshaling gyms", zap.Error(err))
+		return err
+	}
+
+	err = db.Put([]byte(gym), b, nil)
+	if err != nil {
+		logger.Error("reading gym from db", zap.Error(err))
+		return err
+	}
+
+	// Return
+	success = true
+	return err
+}
+
+type Credentials map[string]string

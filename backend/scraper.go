@@ -41,29 +41,7 @@ func init() {
 
 func trigger() {
 
-	ctx, cancel1 := context.WithTimeout(baseContext, 30*time.Second)
-	defer cancel1()
-
-	ex, err := os.Executable()
-	if err != nil {
-		logger.Error("failed to find exe path", zap.Error(err))
-		return
-	}
-
-	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.DisableGPU,
-		chromedp.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"),
-		chromedp.UserDataDir(filepath.Dir(ex)+"/user-data"),
-		chromedp.WindowSize(1920, 1080),
-	)
-
-	ctx, cancel2 := chromedp.NewExecAllocator(ctx, opts...)
-	defer cancel2()
-
-	ctx, cancel3 := chromedp.NewContext(ctx)
-	defer cancel3()
-
-	peopleString, town, err := loginAndCheckMembers(ctx)
+	peopleString, town, err, _ := loginAndCheckMembers(config.User, config.Pass)
 	if err != nil {
 		logger.Error("running chromedp", zap.Error(err))
 		return
@@ -107,7 +85,7 @@ func trigger() {
 	}
 }
 
-func loginAndCheckMembers(ctx context.Context) (people, gym string, err error) {
+func loginAndCheckMembers(user, pass string) (people, gym string, err error, errorString string) {
 
 	actions := []chromedp.Action{
 		network.Enable(),
@@ -174,12 +152,12 @@ func loginAndCheckMembers(ctx context.Context) (people, gym string, err error) {
 
 				logger.Info("Logging in")
 
-				err = chromedp.SendKeys("input[name=username]", config.User).Do(ctx)
+				err = chromedp.SendKeys("input[name=username]", user).Do(ctx)
 				if err != nil {
 					return err
 				}
 
-				err = chromedp.SendKeys("input[name=password]", config.Pass).Do(ctx)
+				err = chromedp.SendKeys("input[name=password]", pass).Do(ctx)
 				if err != nil {
 					return err
 				}
@@ -192,7 +170,47 @@ func loginAndCheckMembers(ctx context.Context) (people, gym string, err error) {
 
 			return nil
 		}),
-		chromedp.WaitVisible("#people_in_gym"),
+		chromedp.WaitVisible("#people_in_gym, div.danger"),
+		chromedp.ActionFunc(func(ctx context.Context) error {
+
+			// Find error message on failure
+			var errorNodes []*cdp.Node
+			err = chromedp.Nodes("div.danger ul li", &errorNodes, chromedp.AtLeast(0)).Do(ctx)
+			if err != nil {
+				return err
+			}
+
+			if len(errorNodes) > 0 {
+
+				err = chromedp.InnerHTML("div.danger ul li", &errorString).Do(ctx)
+				if err != nil {
+					return err
+				}
+			}
+
+			// Save count on success
+			var peopleNodes []*cdp.Node
+			err = chromedp.Nodes("#people_in_gym", &peopleNodes, chromedp.AtLeast(0)).Do(ctx)
+			if err != nil {
+				return err
+			}
+
+			if len(peopleNodes) > 0 {
+
+				err = chromedp.InnerHTML("#people_in_gym span", &people).Do(ctx)
+				if err != nil {
+					return err
+				}
+
+				err = chromedp.AttributeValue("#people_in_gym a", "href", &gym, nil).Do(ctx)
+				if err != nil {
+					return err
+				}
+			}
+
+			//
+			return nil
+		}),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 
 			// logger.Info("Logged in, taking cookies")
@@ -201,15 +219,37 @@ func loginAndCheckMembers(ctx context.Context) (people, gym string, err error) {
 			cookies, err = network.GetAllCookies().Do(ctx)
 			return err
 		}),
-		chromedp.InnerHTML("#people_in_gym span", &people),
-		chromedp.AttributeValue("#people_in_gym a", "href", &gym, nil),
 	}
 
+	// Make context
+	ctx, cancel1 := context.WithTimeout(baseContext, 30*time.Second)
+	defer cancel1()
+
+	ex, err := os.Executable()
+	if err != nil {
+		logger.Error("failed to find exe path", zap.Error(err))
+		return
+	}
+
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.DisableGPU,
+		chromedp.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"),
+		chromedp.UserDataDir(filepath.Dir(ex)+"/user-data"),
+		chromedp.WindowSize(1920, 1080),
+	)
+
+	ctx, cancel2 := chromedp.NewExecAllocator(ctx, opts...)
+	defer cancel2()
+
+	ctx, cancel3 := chromedp.NewContext(ctx)
+	defer cancel3()
+
+	// Retry
 	work := func() error {
 		return chromedp.Run(ctx, actions...)
 	}
 
 	scrape := backoff.Retry(work, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 10))
 
-	return people, path.Base(gym), scrape
+	return people, path.Base(gym), scrape, errorString
 }
