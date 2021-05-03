@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Jleagle/puregym-tracker/config"
-	"github.com/Jleagle/puregym-tracker/influx"
+	"github.com/Jleagle/gym-tracker/config"
+	"github.com/Jleagle/gym-tracker/influx"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"

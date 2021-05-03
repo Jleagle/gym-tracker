@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Jleagle/puregym-tracker/config"
+	"github.com/Jleagle/gym-tracker/config"
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
 )

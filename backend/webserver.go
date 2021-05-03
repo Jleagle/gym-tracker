@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Jleagle/puregym-tracker/config"
-	"github.com/Jleagle/puregym-tracker/helpers"
-	"github.com/Jleagle/puregym-tracker/influx"
+	"github.com/Jleagle/gym-tracker/config"
+	"github.com/Jleagle/gym-tracker/helpers"
+	"github.com/Jleagle/gym-tracker/influx"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"

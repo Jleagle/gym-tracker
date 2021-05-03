@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Jleagle/puregym-tracker/influx"
+	"github.com/Jleagle/gym-tracker/influx"
 	"go.uber.org/zap"
 )
 
