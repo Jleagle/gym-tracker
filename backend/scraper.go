@@ -89,33 +89,6 @@ func loginAndCheckMembers(user, pass string) (people, gym string, err error, err
 
 	actions := []chromedp.Action{
 		network.Enable(),
-		chromedp.ActionFunc(func(ctx context.Context) error {
-
-			if len(cookies) > 0 {
-
-				// logger.Info("Setting cookies", zap.Int("count", len(cookies)))
-
-				for _, cookie := range cookies {
-
-					expr := cdp.TimeSinceEpoch(time.Unix(int64(cookie.Expires), 0))
-					err := network.SetCookie(cookie.Name, cookie.Value).
-						WithExpires(&expr).
-						WithDomain(cookie.Domain).
-						WithHTTPOnly(cookie.HTTPOnly).
-						WithPath(cookie.Path).
-						WithPriority(cookie.Priority).
-						WithSameSite(cookie.SameSite).
-						WithSecure(cookie.Secure).
-						Do(ctx)
-
-					if err != nil {
-						return err
-					}
-				}
-			}
-
-			return nil
-		}),
 		chromedp.Emulate(device.IPadPro),
 		chromedp.Navigate("https://www.puregym.com/members/"),
 		chromedp.WaitVisible("input[name=username], input[name=password], #people_in_gym"),
@@ -211,14 +184,6 @@ func loginAndCheckMembers(user, pass string) (people, gym string, err error, err
 			//
 			return nil
 		}),
-		chromedp.ActionFunc(func(ctx context.Context) error {
-
-			// logger.Info("Logged in, taking cookies")
-
-			var err error
-			cookies, err = network.GetAllCookies().Do(ctx)
-			return err
-		}),
 	}
 
 	// Make context
@@ -234,7 +199,7 @@ func loginAndCheckMembers(user, pass string) (people, gym string, err error, err
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.DisableGPU,
 		chromedp.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"),
-		chromedp.UserDataDir(filepath.Dir(ex)+"/user-data"),
+		chromedp.UserDataDir(filepath.Dir(ex)+"/user-data/"+credential.Email),
 		chromedp.WindowSize(1920, 1080),
 	)
 
