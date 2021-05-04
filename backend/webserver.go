@@ -3,19 +3,21 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Jleagle/gym-tracker/config"
+	"github.com/Jleagle/gym-tracker/datastore"
 	"github.com/Jleagle/gym-tracker/helpers"
 	"github.com/Jleagle/gym-tracker/influx"
+	"github.com/Jleagle/gym-tracker/log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/syndtr/goleveldb/leveldb"
 	"go.uber.org/zap"
 )
 
@@ -64,7 +66,7 @@ func peopleHandler(c *fiber.Ctx) error {
 
 	resp, err := influx.Read(query)
 	if err != nil {
-		logger.Error("failed to query influx", zap.Error(err))
+		log.Instance.Error("failed to query influx", zap.Error(err))
 		return c.JSON(ret)
 	}
 
@@ -78,7 +80,7 @@ func peopleHandler(c *fiber.Ctx) error {
 
 					t, err := time.Parse(time.RFC3339, row[0].(string))
 					if err != nil {
-						logger.Error("parsing time", zap.Error(err))
+						log.Instance.Error("parsing time", zap.Error(err))
 					}
 
 					x = strconv.FormatInt(t.Unix(), 10)
@@ -141,6 +143,7 @@ type RetCol struct {
 	Y map[string]json.Number
 }
 
+//goland:noinspection GoErrorStringFormat
 func newGymHandler(c *fiber.Ctx) error {
 
 	var success bool
@@ -149,38 +152,32 @@ func newGymHandler(c *fiber.Ctx) error {
 	defer func() {
 		err = c.JSON(map[string]interface{}{"success": success, "message": err.Error()})
 		if err != nil {
-			logger.Error("returning response", zap.Error(err))
+			log.Instance.Error("returning response", zap.Error(err))
 		}
 	}()
-
-	var db *leveldb.DB
-	db, err = leveldb.OpenFile("./leveldb/", nil)
-	if err != nil {
-		logger.Error("opening database", zap.Error(err))
-		return err
-	}
-
-	//goland:noinspection GoUnhandledErrorResult
-	defer db.Close()
 
 	// Get data form request
 	var request []string
 	err = json.Unmarshal(c.Body(), &request)
 	if err != nil {
-		logger.Error("opening database", zap.Error(err))
+		log.Instance.Error("opening database", zap.Error(err))
 		return err
 	}
 
 	if len(request) != 2 {
 		err = errors.New("invalid post data")
-		logger.Error("invalid post data", zap.Error(err))
+		log.Instance.Error("invalid post data", zap.Error(err))
 		return err
 	}
 
-	var gym, errorString string
-	_, gym, err, errorString = loginAndCheckMembers(request[0], request[1])
+	if !regexp.MustCompile("[0-9]{6}").Match([]byte(request[1])) {
+		err = errors.New("Invalid PIN")
+		return nil
+	}
+
+	_, gym, err, errorString := scrape(datastore.Credential{Email: request[0], PIN: request[1]})
 	if err != nil {
-		logger.Error("scraping", zap.Error(err))
+		log.Instance.Error("scraping", zap.Error(err))
 		return err
 	}
 
@@ -189,33 +186,9 @@ func newGymHandler(c *fiber.Ctx) error {
 		return nil
 	}
 
-	var b []byte
-	b, err = db.Get([]byte(gym), nil)
+	err = datastore.SaveNewCredential(request[0], request[1], gym)
 	if err != nil {
-		logger.Error("reading gym from db", zap.Error(err))
-		return err
-	}
-
-	// Update database
-	var gyms Credentials
-	err = json.Unmarshal(b, &gyms)
-	if err != nil {
-		logger.Error("unmarshaling gyms", zap.Error(err))
-		return err
-	}
-
-	gyms[request[0]] = request[1]
-
-	// Save back to file
-	b, err = json.Marshal(gyms)
-	if err != nil {
-		logger.Error("marshaling gyms", zap.Error(err))
-		return err
-	}
-
-	err = db.Put([]byte(gym), b, nil)
-	if err != nil {
-		logger.Error("reading gym from db", zap.Error(err))
+		log.Instance.Error("saving to datastore", zap.Error(err))
 		return err
 	}
 
@@ -223,5 +196,3 @@ func newGymHandler(c *fiber.Ctx) error {
 	success = true
 	return err
 }
-
-type Credentials map[string]string

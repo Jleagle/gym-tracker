@@ -4,46 +4,41 @@ import (
 	"flag"
 	"fmt"
 	"math"
+	"math/rand"
 	"sync"
 	"time"
 
 	"github.com/Jleagle/gym-tracker/config"
+	"github.com/Jleagle/gym-tracker/log"
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"
 )
 
-var (
-	logger *zap.Logger
-)
-
 func main() {
 
-	// Logger
-	logger, _ = zap.NewDevelopment()
+	rand.Seed(time.Now().Unix())
 
 	defer func() {
-		err := logger.Sync()
+		err := log.Instance.Sync()
 		if err != nil {
 			fmt.Println(err)
 		}
 	}()
 
 	if config.PortBackend == "" ||
-		config.User == "" ||
-		config.Pass == "" ||
 		config.InfluxURL == "" ||
 		config.InfluxUser == "" ||
 		config.InfluxPass == "" ||
 		config.InfluxDatabase == "" ||
 		config.InfluxRetention == "" {
-		logger.Error("missing configs")
+		log.Instance.Error("missing configs")
 		return
 	}
 
 	// Set timezone to UK
 	loc, err := time.LoadLocation("Europe/London")
 	if err != nil {
-		logger.Error("setting timezone", zap.Error(err))
+		log.Instance.Error("setting timezone", zap.Error(err))
 	}
 	time.Local = loc
 
@@ -54,12 +49,12 @@ func main() {
 	// Scrape
 	if !*disableScraping {
 
-		trigger()
+		scrapeGyms()
 
 		c := cron.New(cron.WithSeconds())
-		_, err := c.AddFunc("10 */10 * * * *", trigger)
+		_, err := c.AddFunc("10 */10 * * * *", scrapeGyms)
 		if err != nil {
-			logger.Error("adding cron", zap.Error(err))
+			log.Instance.Error("adding cron", zap.Error(err))
 			return
 		}
 		c.Start()
@@ -68,7 +63,7 @@ func main() {
 	// Serve JSON
 	err = webserver()
 	if err != nil {
-		logger.Error("serving webserver", zap.Error(err))
+		log.Instance.Error("serving webserver", zap.Error(err))
 	}
 
 	// Block

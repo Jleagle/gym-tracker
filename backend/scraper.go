@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"math/rand"
 	"os"
 	"path"
 	"path/filepath"
@@ -10,8 +11,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Jleagle/gym-tracker/config"
+	"github.com/Jleagle/gym-tracker/datastore"
 	"github.com/Jleagle/gym-tracker/influx"
+	"github.com/Jleagle/gym-tracker/log"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
@@ -24,7 +26,6 @@ import (
 var (
 	baseContext  context.Context
 	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
-	cookies      []*network.Cookie
 )
 
 func init() {
@@ -35,57 +36,70 @@ func init() {
 	// start the browser without a timeout
 	err := chromedp.Run(baseContext)
 	if err != nil {
-		logger.Error("failed to start browser", zap.Error(err))
+		log.Instance.Error("failed to start browser", zap.Error(err))
 	}
 }
 
-func trigger() {
+func scrapeGyms() {
 
-	peopleString, town, err, _ := loginAndCheckMembers(config.User, config.Pass)
+	creds, err := datastore.GetCredentials()
 	if err != nil {
-		logger.Error("running chromedp", zap.Error(err))
+		log.Instance.Error("failed to start browser", zap.Error(err))
+		return
+	}
+
+	for _, v := range creds {
+		scrapeGym(v[rand.Intn(len(v))])
+	}
+}
+
+func scrapeGym(credential datastore.Credential) {
+
+	peopleString, town, err, _ := scrape(credential)
+	if err != nil {
+		log.Instance.Error("running chromedp", zap.Error(err))
 		return
 	}
 
 	if town == "" {
-		logger.Error("missing town")
+		log.Instance.Error("missing town")
 		return
 	}
 
 	if peopleString == "10 or fewer people" {
-		logger.Info("members", zap.String("town", town), zap.Int("now", 0))
+		log.Instance.Info("members", zap.String("town", town), zap.Int("now", 0))
 		return
 	}
 
 	members := membersRegex.FindStringSubmatch(peopleString)
 	if len(members) != 4 {
-		logger.Error("parsing count failed", zap.String("string", peopleString))
+		log.Instance.Error("parsing count failed", zap.String("string", peopleString))
 		return
 	}
 
 	now, err := strconv.Atoi(strings.Replace(members[1], ",", "", 1))
 	if err != nil {
-		logger.Error("parsing members", zap.Error(err), zap.String("string", peopleString))
+		log.Instance.Error("parsing members", zap.Error(err), zap.String("string", peopleString))
 		return
 	}
 
 	max, err := strconv.Atoi(strings.Replace(members[3], ",", "", 1))
 	if err != nil {
-		logger.Error("parsing members", zap.Error(err), zap.String("string", peopleString))
+		log.Instance.Error("parsing members", zap.Error(err), zap.String("string", peopleString))
 		return
 	}
 
 	pct := calculatePercent(now, max)
 
-	logger.Info("members", zap.String("town", town), zap.Int("max", max), zap.Int("now", now), zap.Float64("pct", pct))
+	log.Instance.Info("members", zap.String("town", town), zap.Int("max", max), zap.Int("now", now), zap.Float64("pct", pct))
 
 	_, err = influx.Write(town, now, max, pct, time.Now())
 	if err != nil {
-		logger.Error("sending to influx failed", zap.Error(err))
+		log.Instance.Error("sending to influx failed", zap.Error(err))
 	}
 }
 
-func loginAndCheckMembers(user, pass string) (people, gym string, err error, errorString string) {
+func scrape(credential datastore.Credential) (people, gym string, err error, errorString string) {
 
 	actions := []chromedp.Action{
 		network.Enable(),
@@ -103,7 +117,7 @@ func loginAndCheckMembers(user, pass string) (people, gym string, err error, err
 
 			if len(cookieNodes) > 0 {
 
-				// logger.Info("Submitting cookie popup")
+				// log.Instance.Info("Submitting cookie popup")
 
 				_, exp, err := runtime.Evaluate("CookieInformation.submitAllCategories();").Do(ctx)
 				if err != nil {
@@ -123,14 +137,14 @@ func loginAndCheckMembers(user, pass string) (people, gym string, err error, err
 
 			if len(loginNodes) > 0 {
 
-				logger.Info("Logging in")
+				log.Instance.Info("Logging in")
 
-				err = chromedp.SendKeys("input[name=username]", user).Do(ctx)
+				err = chromedp.SendKeys("input[name=username]", credential.Email).Do(ctx)
 				if err != nil {
 					return err
 				}
 
-				err = chromedp.SendKeys("input[name=password]", pass).Do(ctx)
+				err = chromedp.SendKeys("input[name=password]", credential.PIN).Do(ctx)
 				if err != nil {
 					return err
 				}
@@ -192,7 +206,7 @@ func loginAndCheckMembers(user, pass string) (people, gym string, err error, err
 
 	ex, err := os.Executable()
 	if err != nil {
-		logger.Error("failed to find exe path", zap.Error(err))
+		log.Instance.Error("failed to find exe path", zap.Error(err))
 		return
 	}
 

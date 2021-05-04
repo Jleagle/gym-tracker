@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"github.com/Jleagle/gym-tracker/log"
 	"io"
 	"os"
 	"strconv"
@@ -15,7 +16,7 @@ func importFromChronograf() {
 
 	csvfile, err := os.Open("import.csv")
 	if err != nil {
-		logger.Error("reading file", zap.Error(err))
+		log.Instance.Error("reading file", zap.Error(err))
 		return
 	}
 
@@ -27,7 +28,7 @@ func importFromChronograf() {
 			break
 		}
 		if err != nil {
-			logger.Error("reading csv", zap.Error(err))
+			log.Instance.Error("reading csv", zap.Error(err))
 		}
 
 		if len(record) == 2 {
@@ -38,13 +39,13 @@ func importFromChronograf() {
 
 			t, err := time.Parse(time.RFC3339, record[0])
 			if err != nil {
-				logger.Error("reading csv", zap.Error(err), zap.String("time", record[0]))
+				log.Instance.Error("reading csv", zap.Error(err), zap.String("time", record[0]))
 				continue
 			}
 
 			i, err := strconv.Atoi(record[1])
 			if err != nil {
-				logger.Error("reading csv", zap.Error(err))
+				log.Instance.Error("reading csv", zap.Error(err))
 				continue
 			}
 
@@ -52,11 +53,11 @@ func importFromChronograf() {
 
 			_, err = influx.Write("fareham", i, 120, p, t)
 			if err != nil {
-				logger.Error("reading csv", zap.Error(err))
+				log.Instance.Error("reading csv", zap.Error(err))
 				continue
 			}
 		}
 	}
 
-	logger.Info("Done")
+	log.Instance.Info("Done")
 }

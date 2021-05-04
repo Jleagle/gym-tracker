@@ -8,8 +8,8 @@ var (
 	Environment = os.Getenv("PURE_ENV")
 	PortBackend = os.Getenv("PURE_PORT_BACKEND")
 
-	User = os.Getenv("PURE_USER")
-	Pass = os.Getenv("PURE_PASS")
+	DatastoreProject = os.Getenv("PURE_DS_PROJECT")
+	DatastoreKey     = os.Getenv("PURE_DS_KEY")
 
 	InfluxURL       = os.Getenv("PURE_INFLUX_URL")
 	InfluxUser      = os.Getenv("PURE_INFLUX_USER")
