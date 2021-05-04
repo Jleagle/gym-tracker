@@ -1,12 +1,17 @@
 import React from 'react'
 import {Alert, Button, FormLabel} from 'react-bootstrap'
 import Link from 'next/link'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faSpinner} from "@fortawesome/free-solid-svg-icons"
 
 function NewGymPage() {
 
   const submitForm = (event) => {
 
     event.preventDefault()
+
+    const loading = document.querySelector('button[type=submit] svg')
+    loading.classList.remove('d-none')
 
     // const url = 'http://localhost:' + process.env.PURE_PORT_BACKEND + '/new-gym'
     const url = 'https://gymtrackerapi.jimeagle.com/new-gym'
@@ -36,6 +41,8 @@ function NewGymPage() {
           alert.classList.add('alert-danger')
           alert.innerHTML = response.message
         }
+
+        loading.classList.add('d-none')
       })
 
     return false
@@ -61,7 +68,9 @@ function NewGymPage() {
                      required/>
             </div>
 
-            <Button type="submit" className="btn btn-success">Submit</Button>
+            <Button type="submit" className="btn btn-success">
+              Submit <FontAwesomeIcon className="d-none" icon={faSpinner} spin/>
+            </Button>
             <Link href="/"><a type="button" className="btn btn-primary float-end">Back</a></Link>
           </form>
         </div>
