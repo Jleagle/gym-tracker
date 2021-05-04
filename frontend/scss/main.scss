@@ -1,38 +1,40 @@
 body {
-    background-color: #B8860BA1;
+  background-color: #B8860BA1;
 }
 
 h1 {
-    margin-top: 40px;
-    margin-bottom: 20px;
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 
 h2 {
-    text-align: center;
-    margin-top: 40px;
+  text-align: center;
+  margin-top: 40px;
 }
 
 .chart {
-    height: 400px;
-    border-radius: 10px;
-    overflow: hidden;
+  height: 400px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 button svg {
-    width: 20px;
+  width: 20px;
 }
 
 @keyframes spinner {
-    to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .fa-spinner {
-    /* Apply 'spinner' keyframes looping once every second (1s)  */
-    animation: spinner 1s linear infinite;
+  /* Apply 'spinner' keyframes looping once every second (1s)  */
+  animation: spinner 1s linear infinite;
 }
 
 footer {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
