@@ -50,7 +50,8 @@ function NewGymPage() {
 
   return (
     <>
-      <p>Gym Tracker only works with PureGym.<br/>Please enter your email and PIN so we can access your gym's member count.</p>
+      <p>Gym Tracker only works with PureGym.
+        <br/>Please enter your email and PIN so we can access your gym's member count.</p>
       <Alert className="d-none" id="alert">.</Alert>
 
       <div className="row">
@@ -59,7 +60,7 @@ function NewGymPage() {
           <form onSubmit={submitForm}>
             <div className="mb-3">
               <label htmlFor="email" className="form-label">Email Address</label>
-              <input type="email" className="form-control" id="email"/>
+              <input type="email" className="form-control" id="email" required/>
             </div>
 
             <div className="mb-3">
