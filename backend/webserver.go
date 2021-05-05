@@ -176,6 +176,12 @@ func newGymHandler(c *fiber.Ctx) error {
 		return err
 	}
 
+	if //goland:noinspection RegExpRedundantEscape
+	!regexp.MustCompile(`.+\@.+\..+`).Match([]byte(request[0])) {
+		err = errors.New("Invalid Email")
+		return nil
+	}
+
 	if !regexp.MustCompile("[0-9]{6}").Match([]byte(request[1])) {
 		err = errors.New("Invalid PIN")
 		return nil
