@@ -182,7 +182,7 @@ func newGymHandler(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if !regexp.MustCompile("[0-9]{6}").Match([]byte(request[1])) {
+	if !regexp.MustCompile("^[0-9]{8}$").Match([]byte(request[1])) {
 		err = errors.New("Invalid PIN")
 		return nil
 	}
