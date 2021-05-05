@@ -150,7 +150,13 @@ func newGymHandler(c *fiber.Ctx) error {
 	var err error
 
 	defer func() {
-		err = c.JSON(map[string]interface{}{"success": success, "message": err.Error()})
+
+		resp := map[string]interface{}{"success": success}
+		if err != nil {
+			resp["message"] = err.Error()
+		}
+
+		err = c.JSON(resp)
 		if err != nil {
 			log.Instance.Error("returning response", zap.Error(err))
 		}
