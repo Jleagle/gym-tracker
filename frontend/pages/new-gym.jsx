@@ -2,7 +2,7 @@ import React from 'react'
 import {Alert, Button, FormLabel} from 'react-bootstrap'
 import Link from 'next/link'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faSpinner} from "@fortawesome/free-solid-svg-icons"
+import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 
 function NewGymPage() {
 
@@ -11,6 +11,9 @@ function NewGymPage() {
     event.preventDefault()
 
     const loading = document.querySelector('button[type=submit] svg')
+    const email = document.getElementById('email')
+    const pin = document.getElementById('pin')
+
     loading.classList.remove('d-none')
 
     // const url = 'http://localhost:' + process.env.PURE_PORT_BACKEND + '/new-gym'
@@ -22,10 +25,7 @@ function NewGymPage() {
     fetch(url, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify([
-        document.getElementById('email').value,
-        document.getElementById('pin').value,
-      ]),
+      body: JSON.stringify([email.value, pin.value]),
     })
       .then(response => response.json())
       .then(response => {
@@ -37,6 +37,8 @@ function NewGymPage() {
         if (response.success) {
           alert.classList.add('alert-success')
           alert.innerHTML = 'Success, thanks!'
+          email.value = ''
+          pin.value = ''
         } else {
           alert.classList.add('alert-danger')
           alert.innerHTML = response.message
