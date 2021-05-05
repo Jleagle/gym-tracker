@@ -29,6 +29,7 @@ func main() {
 		config.InfluxURL == "" ||
 		config.InfluxUser == "" ||
 		config.InfluxPass == "" ||
+		config.GoogleProject == "" ||
 		config.InfluxDatabase == "" ||
 		config.InfluxRetention == "" {
 		log.Instance.Error("missing configs")

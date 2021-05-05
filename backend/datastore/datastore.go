@@ -2,6 +2,7 @@ package datastore
 
 import (
 	"context"
+	"path/filepath"
 
 	"cloud.google.com/go/datastore"
 	"github.com/Jleagle/gym-tracker/config"
@@ -17,10 +18,13 @@ var (
 
 func init() {
 
-	ctx = context.Background()
+	abs, err := filepath.Abs("./")
+	if err != nil {
+		log.Instance.Error("abs", zap.Error(err))
+	}
 
-	var err error
-	client, err = datastore.NewClient(ctx, config.DatastoreProject, option.WithAPIKey(config.DatastoreKey))
+	ctx = context.Background()
+	client, err = datastore.NewClient(ctx, config.GoogleProject, option.WithCredentialsFile(abs+"/gcp-auth.json"))
 	if err != nil {
 		log.Instance.Error("create datastore client", zap.Error(err))
 	}
@@ -37,7 +41,7 @@ func SaveNewCredential(email, pin, gym string) error {
 	key := datastore.IncompleteKey("Credential", nil)
 	data := Credential{Email: email, PIN: pin, Gym: gym}
 
-	_, err := client.Put(ctx, key, data)
+	_, err := client.Put(ctx, key, &data)
 	return err
 }
 

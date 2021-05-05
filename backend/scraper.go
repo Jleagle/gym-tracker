@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"math/rand"
-	"os"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -204,16 +203,15 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 	ctx, cancel1 := context.WithTimeout(baseContext, 30*time.Second)
 	defer cancel1()
 
-	ex, err := os.Executable()
+	abs, err := filepath.Abs("./")
 	if err != nil {
-		log.Instance.Error("failed to find exe path", zap.Error(err))
-		return
+		log.Instance.Error("abs", zap.Error(err))
 	}
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.DisableGPU,
 		chromedp.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"),
-		chromedp.UserDataDir(filepath.Dir(ex)+"/user-data/"+credential.Email),
+		chromedp.UserDataDir(abs+"/user-data/"+credential.Email),
 		chromedp.WindowSize(1920, 1080),
 	)
 
