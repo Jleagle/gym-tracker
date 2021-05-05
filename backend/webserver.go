@@ -176,6 +176,9 @@ func newGymHandler(c *fiber.Ctx) error {
 		return err
 	}
 
+	request[0] = strings.TrimSpace(request[0])
+	request[1] = strings.TrimSpace(request[1])
+
 	if //goland:noinspection RegExpRedundantEscape
 	!regexp.MustCompile(`.+\@.+\..+`).Match([]byte(request[0])) {
 		err = errors.New("Invalid Email")
