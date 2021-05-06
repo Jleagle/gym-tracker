@@ -2,6 +2,7 @@ package datastore
 
 import (
 	"context"
+	"math/rand"
 	"path/filepath"
 
 	"cloud.google.com/go/datastore"
@@ -45,9 +46,9 @@ func SaveNewCredential(email, pin, gym string) error {
 	return err
 }
 
-func GetCredentials() (credsMap map[string][]Credential, err error) {
+func GetCredentials() (ret []Credential, err error) {
 
-	query := datastore.NewQuery("Credential")
+	query := datastore.NewQuery("Credential") // Grab whole table
 
 	var creds []Credential
 	_, err = client.GetAll(ctx, query, &creds)
@@ -55,10 +56,22 @@ func GetCredentials() (credsMap map[string][]Credential, err error) {
 		return nil, err
 	}
 
-	credsMap = map[string][]Credential{}
+	// Group by gym and email
+	credsMap := map[string]map[string]Credential{}
 	for _, v := range creds {
-		credsMap[v.Gym] = append(credsMap[v.Gym], v)
+		credsMap[v.Gym][v.Email] = v
 	}
 
-	return credsMap, nil
+	creds = []Credential{}
+	for _, gymCreds := range credsMap {
+		var s []Credential
+		for _, vv := range gymCreds {
+			s = append(s, vv)
+		}
+		if len(s) > 0 {
+			ret = append(ret, s[rand.Intn(len(s))])
+		}
+	}
+
+	return ret, nil
 }

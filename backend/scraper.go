@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"math/rand"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -48,7 +47,7 @@ func scrapeGyms() {
 	}
 
 	for _, v := range creds {
-		scrapeGym(v[rand.Intn(len(v))])
+		scrapeGym(v)
 	}
 }
 
