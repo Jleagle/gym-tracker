@@ -55,9 +55,11 @@ func peopleHandler(c *fiber.Ctx) error {
 	var query string
 	var key = "influx-" + groupBy
 
-	cached, found := gc.Get(key)
-	if found {
-		return c.JSON(cached)
+	if config.Environment == "PRODUCTION" {
+		cached, found := gc.Get(key)
+		if found {
+			return c.JSON(cached)
+		}
 	}
 
 	switch groupBy {
