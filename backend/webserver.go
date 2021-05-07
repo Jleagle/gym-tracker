@@ -15,9 +15,10 @@ import (
 	"github.com/Jleagle/gym-tracker/influx"
 	"github.com/Jleagle/gym-tracker/log"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cache"
+	fiverCache "github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/patrickmn/go-cache"
 	"go.uber.org/zap"
 )
 
@@ -27,7 +28,7 @@ func webserver() error {
 
 	// Middleware
 	if config.Environment == "PRODUCTION" {
-		app.Use(cache.New(cache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
+		app.Use(fiverCache.New(fiverCache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
 	}
 	app.Use(compress.New(compress.Config{Level: compress.LevelBestSpeed}))
 	app.Use(cors.New(cors.Config{AllowOrigins: "*", AllowMethods: "GET POST"})) // for the new gym form
@@ -45,11 +46,19 @@ func rootHandler(c *fiber.Ctx) error {
 	return c.SendString("OK")
 }
 
+var gc = cache.New(time.Minute, time.Second*10)
+
 func peopleHandler(c *fiber.Ctx) error {
 
 	var groupBy = c.Query("group")
 	var ret = Ret{Group: groupBy, Cols: []RetCol{}}
 	var query string
+	var key = "influx-" + groupBy
+
+	cached, found := gc.Get(key)
+	if found {
+		return c.JSON(cached)
+	}
 
 	switch groupBy {
 	case "yearDay", "monthDay", "weekDay", "weekHour", "hour":
@@ -129,6 +138,8 @@ func peopleHandler(c *fiber.Ctx) error {
 
 		return pieces1[0] < pieces2[0] // Alphabetically
 	})
+
+	gc.Set(key, ret, cache.DefaultExpiration)
 
 	return c.JSON(ret)
 }
