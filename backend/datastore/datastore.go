@@ -59,6 +59,9 @@ func GetCredentials() (ret []Credential, err error) {
 	// Group by gym and email
 	credsMap := map[string]map[string]Credential{}
 	for _, v := range creds {
+		if credsMap[v.Gym] == nil {
+			credsMap[v.Gym] = map[string]Credential{}
+		}
 		credsMap[v.Gym][v.Email] = v
 	}
 
