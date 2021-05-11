@@ -242,9 +242,8 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.DisableGPU,
-		chromedp.UserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36"),
 		chromedp.UserDataDir(abs+"/user-data/"+credential.Email),
-		chromedp.WindowSize(1920, 1080),
+		// User agent and window size set in .Emulate()
 	)
 
 	ctx, cancel2 := chromedp.NewExecAllocator(ctx, opts...)
