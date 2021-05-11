@@ -8,6 +8,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -o gym-tracker
 FROM chromedp/headless-shell:latest AS runtime-env
 WORKDIR /root/
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get -y install tini
+RUN apt-get update && apt-get -y install tini ca-certificates
 COPY --from=build-env /root/gym-tracker ./
 ENTRYPOINT ["tini", "--", "/root/gym-tracker"]
