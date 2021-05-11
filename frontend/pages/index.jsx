@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export async function getServerSideProps() {
 
-  // const base = 'http://localhost:' + process.env.PURE_PORT_BACKEND + '/people.json?group=';
+  // const base = 'http://localhost:' + process.env.GYMTRACKER_PORT_BACKEND + '/people.json?group=';
   const base = 'https://gymtrackerapi.jimeagle.com/people.json?group='
 
   let [yearDay, monthDay, weekDay, weekHour, hour, now] = await Promise.all([

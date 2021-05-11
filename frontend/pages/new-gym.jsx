@@ -16,7 +16,7 @@ function NewGymPage() {
 
     loading.classList.remove('d-none')
 
-    // const url = 'http://localhost:' + process.env.PURE_PORT_BACKEND + '/new-gym'
+    // const url = 'http://localhost:' + process.env.GYMTRACKER_PORT_BACKEND + '/new-gym'
     const url = 'https://gymtrackerapi.jimeagle.com/new-gym'
 
     const myHeaders = new Headers()

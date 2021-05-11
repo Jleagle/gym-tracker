@@ -4,6 +4,6 @@ module.exports = {
         webpack5: true,
     },
     env:{
-        PURE_PORT_BACKEND: process.env.PURE_PORT_BACKEND,
+        GYMTRACKER_PORT_BACKEND: process.env.GYMTRACKER_PORT_BACKEND,
     }
 }
