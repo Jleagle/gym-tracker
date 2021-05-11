@@ -253,11 +253,9 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 	defer cancel3()
 
 	// Retry
-	work := func() error {
-		return chromedp.Run(ctx, actions...)
-	}
-
-	scrape := backoff.Retry(work, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 10))
+	work := func() error { return chromedp.Run(ctx, actions...) }
+	notify := func(error, time.Duration) { log.Instance.Info("Failed to request counts", zap.Error(err)) }
+	scrape := backoff.RetryNotify(work, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 10), notify)
 
 	return people, path.Base(gym), scrape, errorString
 }
