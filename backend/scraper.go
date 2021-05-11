@@ -24,6 +24,7 @@ import (
 var (
 	baseContext  context.Context
 	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
+	cookies      = map[string][]*network.Cookie{}
 )
 
 func init() {
@@ -101,6 +102,30 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 
 	actions := []chromedp.Action{
 		network.Enable(),
+		chromedp.ActionFunc(func(ctx context.Context) error {
+
+			// logger.Info("Setting cookies", zap.Int("count", len(cookies)))
+
+			for _, cookie := range cookies[credential.Email] {
+
+				expr := cdp.TimeSinceEpoch(time.Unix(int64(cookie.Expires), 0))
+				err := network.SetCookie(cookie.Name, cookie.Value).
+					WithExpires(&expr).
+					WithDomain(cookie.Domain).
+					WithHTTPOnly(cookie.HTTPOnly).
+					WithPath(cookie.Path).
+					WithPriority(cookie.Priority).
+					WithSameSite(cookie.SameSite).
+					WithSecure(cookie.Secure).
+					Do(ctx)
+
+				if err != nil {
+					return err
+				}
+			}
+
+			return nil
+		}),
 		chromedp.Emulate(device.IPadPro),
 		chromedp.Navigate("https://www.puregym.com/members/"),
 		chromedp.WaitVisible("input[name=username], input[name=password], #people_in_gym"),
@@ -195,6 +220,14 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 
 			//
 			return nil
+		}),
+		chromedp.ActionFunc(func(ctx context.Context) error {
+
+			// logger.Info("Logged in, taking cookies")
+
+			var err error
+			cookies[credential.Email], err = network.GetAllCookies().Do(ctx)
+			return err
 		}),
 	}
 
