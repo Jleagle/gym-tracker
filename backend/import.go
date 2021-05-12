@@ -12,6 +12,9 @@ import (
 	"go.uber.org/zap"
 )
 
+// DROP MEASUREMENT GymTracker
+// SELECT max("people") AS "mean_people" FROM "GymTracker"."alltime"."gyms" WHERE time > now() - 1000w GROUP BY time(1m) FILL(none)
+
 func importFromChronograf() {
 
 	csvfile, err := os.Open("import.csv")
