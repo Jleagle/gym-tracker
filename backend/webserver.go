@@ -65,11 +65,11 @@ func peopleHandler(c *fiber.Ctx) error {
 	switch groupBy {
 	case "yearDay", "monthDay", "weekDay", "weekHour", "dayHour":
 
-		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "PureGym"."alltime"."gyms" WHERE time > now()-365d GROUP BY ` + groupBy + ` FILL(0)`
+		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "GymTracker"."alltime"."gyms" WHERE time > now()-365d GROUP BY ` + groupBy + ` FILL(0)`
 
 	case "now":
 
-		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "PureGym"."alltime"."gyms" WHERE time > now()-24h GROUP BY time(10m) FILL(0)`
+		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "GymTracker"."alltime"."gyms" WHERE time > now()-24h GROUP BY time(10m) FILL(0)`
 
 	default:
 		return c.JSON(ret)
