@@ -13,6 +13,6 @@ var (
 	InfluxURL       = os.Getenv("GYMTRACKER_INFLUX_URL")
 	InfluxUser      = os.Getenv("GYMTRACKER_INFLUX_USER")
 	InfluxPass      = os.Getenv("GYMTRACKER_INFLUX_PASS")
-	InfluxDatabase  = os.Getenv("GYMTRACKER_INFLUX_DATABASE")
-	InfluxRetention = os.Getenv("GYMTRACKER_INFLUX_RETENTION")
+	InfluxDatabase  = "GymTracker"
+	InfluxRetention = "alltime"
 )
