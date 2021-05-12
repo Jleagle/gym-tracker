@@ -25,6 +25,16 @@ func main() {
 		}
 	}()
 
+	// Set timezone to UK
+	loc, err := time.LoadLocation("Europe/London")
+	if err != nil {
+		log.Instance.Error("setting timezone", zap.Error(err))
+	}
+	time.Local = loc
+
+	//importFromChronograf()
+	//return
+
 	if config.PortBackend == "" ||
 		config.InfluxURL == "" ||
 		config.InfluxUser == "" ||
@@ -35,13 +45,6 @@ func main() {
 		log.Instance.Error("missing configs")
 		return
 	}
-
-	// Set timezone to UK
-	loc, err := time.LoadLocation("Europe/London")
-	if err != nil {
-		log.Instance.Error("setting timezone", zap.Error(err))
-	}
-	time.Local = loc
 
 	// Flags
 	disableScraping := flag.Bool("noscrape", false, "Disable scraping")
