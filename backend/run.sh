@@ -9,7 +9,7 @@ docker run \
   --rm \
   -d \
   -v ${DOCKER_DATA}/gym-tracker/gcp-auth.json:/root/gcp-auth.json \
-  -h puregymtrackerback \
+  -h gym-tracker \
   -e GYMTRACKER_ENV=PRODUCTION \
   -e GYMTRACKER_PORT_BACKEND \
   -e GYMTRACKER_GOOGLE_PROJECT \
