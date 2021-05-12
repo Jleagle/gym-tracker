@@ -54,7 +54,7 @@ function BarChart({data}) {
           case 'weekDay':
             ret += ' on ' + this.x + 's'
             break
-          case 'hour':
+          case 'dayHour':
             ret += ' at ' + this.x
             break
         }
@@ -80,7 +80,7 @@ function BarChart({data}) {
               return days[a.X]
             case 'weekHour':
               return ''
-            case 'hour':
+            case 'dayHour':
               return a.X + ':00'
             default:
               return ''

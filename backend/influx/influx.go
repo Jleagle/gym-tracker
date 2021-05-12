@@ -59,7 +59,7 @@ func Write(gym string, count int, max int, percent float64, t time.Time) (resp *
 				"monthDay": strconv.Itoa(t.Day()),
 				"weekDay":  strconv.Itoa(int(t.Weekday())),
 				"weekHour": strconv.Itoa(int(t.Weekday())) + "-" + strconv.Itoa(t.Hour()),
-				"hour":     strconv.Itoa(t.Hour()),
+				"dayHour":  strconv.Itoa(t.Hour()),
 			},
 			Time:      t,
 			Precision: "m",

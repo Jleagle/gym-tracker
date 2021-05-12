@@ -10,19 +10,19 @@ export async function getServerSideProps() {
   // const base = 'http://localhost:' + process.env.GYMTRACKER_PORT_BACKEND + '/people.json?group=';
   const base = 'https://gymtrackerapi.jimeagle.com/people.json?group='
 
-  let [yearDay, monthDay, weekDay, weekHour, hour, now] = await Promise.all([
+  let [yearDay, monthDay, weekDay, weekHour, dayHour, now] = await Promise.all([
     fetch(base + 'yearDay').then((response) => response.json()),
     fetch(base + 'monthDay').then((response) => response.json()),
     fetch(base + 'weekDay').then((response) => response.json()),
     fetch(base + 'weekHour').then((response) => response.json()),
-    fetch(base + 'hour').then((response) => response.json()),
+    fetch(base + 'dayHour').then((response) => response.json()),
     fetch(base + 'now').then((response) => response.json()),
   ])
 
-  return {props: {yearDay, monthDay, weekDay, weekHour, hour, now}}
+  return {props: {yearDay, monthDay, weekDay, weekHour, dayHour, now}}
 }
 
-function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
+function HomePage({yearDay, monthDay, weekDay, weekHour, dayHour, now}) {
 
   return (
     <>
@@ -39,7 +39,7 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, hour, now}) {
           <LineChart data={now}/>
 
           <h2>By hour of the day</h2>
-          <BarChart data={hour}/>
+          <BarChart data={dayHour}/>
 
           <h2>By hour of the week</h2>
           <HeatMap data={weekHour}/>
