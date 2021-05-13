@@ -1,6 +1,3 @@
 - Auto refresh line chart
 - Improve theme, darker, fonts etc
 - Improve on mobile
-- New gym form
-- Redo Influx data in correct timezone
-- Cache all DB calls
