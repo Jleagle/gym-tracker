@@ -53,7 +53,10 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, dayHour, now}) {
           <h2>By day of the year</h2>
           <BarChart data={yearDay}/>
 
-          <footer>Data updated every 10 minutes. If a gym has 10 or less members inside, it will show as 0.</footer>
+          <footer>
+            Data updated every 10 minutes. If a gym has 10 or less members inside, it will show as 0.<br/>
+            Created by <a href="https://jimeagle.com">Jim Eagle</a>
+          </footer>
         </div>
       </div>
     </>
