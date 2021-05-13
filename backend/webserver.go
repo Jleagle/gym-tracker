@@ -27,7 +27,7 @@ func webserver() error {
 	app := fiber.New()
 
 	// Middleware
-	if config.Environment == "PRODUCTION" {
+	if config.Environment == config.EnvProduction {
 		app.Use(fiverCache.New(fiverCache.Config{Expiration: time.Minute, KeyGenerator: func(c *fiber.Ctx) string { return c.OriginalURL() }}))
 	}
 	app.Use(compress.New(compress.Config{Level: compress.LevelBestSpeed}))
@@ -55,7 +55,7 @@ func peopleHandler(c *fiber.Ctx) error {
 	var query string
 	var key = "influx-" + groupBy
 
-	if config.Environment == "PRODUCTION" {
+	if config.Environment == config.EnvProduction {
 		cached, found := gc.Get(key)
 		if found {
 			return c.JSON(cached)

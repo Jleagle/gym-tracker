@@ -4,6 +4,8 @@ import (
 	"os"
 )
 
+const EnvProduction = "PRODUCTION"
+
 var (
 	Environment = os.Getenv("GYMTRACKER_ENV")
 	PortBackend = os.Getenv("GYMTRACKER_PORT_BACKEND")
