@@ -66,7 +66,12 @@ func scrapeGym(credential datastore.Credential) {
 	}
 
 	if peopleString == "10 or fewer people" {
-		log.Instance.Info("members", zap.String("town", town), zap.Int("now", 0))
+
+		_, err = influx.Write(town, 0, 0, 0, time.Now())
+		if err != nil {
+			log.Instance.Error("sending to influx failed", zap.Error(err))
+		}
+
 		return
 	}
 
@@ -89,8 +94,6 @@ func scrapeGym(credential datastore.Credential) {
 	}
 
 	pct := calculatePercent(now, max)
-
-	log.Instance.Info("members", zap.String("town", town), zap.Int("max", max), zap.Int("now", now), zap.Float64("pct", pct))
 
 	_, err = influx.Write(town, now, max, pct, time.Now())
 	if err != nil {

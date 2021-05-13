@@ -1,6 +1,8 @@
 package influx
 
 import (
+	"github.com/Jleagle/gym-tracker/log"
+	"go.uber.org/zap"
 	"net/url"
 	"strconv"
 	"sync"
@@ -41,6 +43,8 @@ func getClient() (*influx.Client, error) {
 }
 
 func Write(gym string, count int, max int, percent float64, t time.Time) (resp *influx.Response, err error) {
+
+	log.Instance.Info("members", zap.String("town", gym), zap.Int("max", max), zap.Int("now", count), zap.Float64("pct", percent))
 
 	client, err := getClient()
 	if err != nil {
