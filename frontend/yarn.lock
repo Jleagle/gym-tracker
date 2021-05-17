@@ -166,10 +166,15 @@
   resolved "https://registry.npmjs.org/@types/invariant/-/invariant-2.2.34.tgz"
   integrity sha512-lYUtmJ9BqUN688fGY1U1HZoWT1/Jrmgigx2loq4ZcJpICECm/Om3V314BxdzypO0u5PORKGMM6x0OXaljV1YFg==
 
-"@types/node@*", "@types/node@^15.0.1":
+"@types/node@*":
   version "15.0.1"
   resolved "https://registry.npmjs.org/@types/node/-/node-15.0.1.tgz"
   integrity sha512-TMkXt0Ck1y0KKsGr9gJtWGjttxlZnnvDtphxUOSd0bfaR6Q1jle+sPvrzNR1urqYTWMinoKvjKfXUGsumaO1PA==
+
+"@types/node@^15.3.0":
+  version "15.3.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.3.0.tgz#d6fed7d6bc6854306da3dea1af9f874b00783e26"
+  integrity sha512-8/bnjSZD86ZfpBsDlCIkNXIvm+h6wi9g7IqL+kmFkQ+Wvu3JrasgLElfiPgoo8V8vVfnEi0QVS12gbl94h9YsQ==
 
 "@types/prop-types@*", "@types/prop-types@^15.7.3":
   version "15.7.3"
@@ -183,10 +188,19 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@>=16.14.4", "@types/react@>=16.9.11", "@types/react@^17.0.4":
+"@types/react@*", "@types/react@>=16.14.4", "@types/react@>=16.9.11":
   version "17.0.4"
   resolved "https://registry.npmjs.org/@types/react/-/react-17.0.4.tgz"
   integrity sha512-onz2BqScSFMoTRdJUZUDD/7xrusM8hBA2Fktk2qgaTYPCgPvWnDEgkrOs8hhPUf2jfcIXkJ5yK6VfYormJS3Jw==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
+"@types/react@^17.0.5":
+  version "17.0.5"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.5.tgz#3d887570c4489011f75a3fc8f965bf87d09a1bea"
+  integrity sha512-bj4biDB9ZJmGAYTWSKJly6bMr4BLUiBrx9ujiJEoP9XIDY9CTaPGxE5QWN/1WjpPLzYF7/jRNnV2nNxNe970sw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -910,10 +924,10 @@ highcharts-react-official@^3.0.0:
   resolved "https://registry.npmjs.org/highcharts-react-official/-/highcharts-react-official-3.0.0.tgz"
   integrity sha512-VefJgDY2hkT9gfppsQGrRF2g5u8d9dtfHGcx2/xqiP+PkZXCqalw9xOeKVCRvJKTOh0coiDFwvVjOvB7KaGl4A==
 
-highcharts@^9.0.1:
-  version "9.0.1"
-  resolved "https://registry.npmjs.org/highcharts/-/highcharts-9.0.1.tgz"
-  integrity sha512-0UmcCz2RmFuqfT/Igu3h5sGnkeSqqZwfuYrTzJ/htptmJAo5SSxH62NFcTjVRk+3WstoBJmoXR0v5FVGQUzK5A==
+highcharts@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-9.1.0.tgz#2cdb38e2e03530b4fde022bb05fbce5b34651e39"
+  integrity sha512-K7HUuKhEylZ1pMdzGR35kPgUmpp0MDNpaWhEMkGiC5Jfzg/endtTLHJN2lsFqEO+xoN7AykBK98XaJPEpsrLyA==
 
 hmac-drbg@^1.0.1:
   version "1.0.1"
@@ -1558,10 +1572,10 @@ raw-body@2.4.1:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-bootstrap@^2.0.0-alpha.1:
-  version "2.0.0-alpha.1"
-  resolved "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-2.0.0-alpha.1.tgz"
-  integrity sha512-zoIGDzgcBoGiKd/0Rgh5SRyvqgH5OJPMEtXp+1v4Ek8gZDVSPZf58Oy4yhXs30pw4HKBS0s4yzJZcGMFKq3Yuw==
+react-bootstrap@^2.0.0-alpha.2:
+  version "2.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-2.0.0-alpha.2.tgz#7ad65c269ef330fa78f34a0cfd36f57c56de84e1"
+  integrity sha512-Sjaq/EwI0ZJaN+yja4FLeJczvXuoYDxwNQsJsuzdpTAFCtCvTAh0P/PUA8n1CTxePfjbPzcnSLhKGN0k0FGdAg==
   dependencies:
     "@babel/runtime" "^7.13.8"
     "@restart/context" "^2.1.4"
@@ -1700,10 +1714,10 @@ safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-sass@^1.32.11:
-  version "1.32.11"
-  resolved "https://registry.npmjs.org/sass/-/sass-1.32.11.tgz"
-  integrity sha512-O9tRcob/fegUVSIV1ihLLZcftIOh0AF1VpKgusUfLqnb2jQ0GLDwI5ivv1FYWivGv8eZ/AwntTyTzjcHu0c/qw==
+sass@^1.32.13:
+  version "1.32.13"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.32.13.tgz#8d29c849e625a415bce71609c7cf95e15f74ed00"
+  integrity sha512-dEgI9nShraqP7cXQH+lEXVf73WOPCse0QlFzSD8k+1TcOxCMwVXfQlr0jtoluZysQOyJGnfr21dLvYKDJq8HkA==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
