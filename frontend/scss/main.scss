@@ -16,10 +16,17 @@ h2 {
   height: 400px;
   border-radius: 10px;
   overflow: hidden;
+  margin-top: 20px;
 }
 
-button svg {
-  width: 20px;
+button {
+  svg {
+    width: 20px;
+  }
+}
+
+.btn-success a {
+  color: black;
 }
 
 @keyframes spinner {
