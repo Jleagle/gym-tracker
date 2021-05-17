@@ -8,6 +8,7 @@ if (typeof Highcharts === 'object') {
 }
 
 const days = ['', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 function BarChart({data}) {
 
@@ -44,6 +45,9 @@ function BarChart({data}) {
         }
 
         switch (data.group) {
+          case 'yearMonth':
+            ret += ' in ' + this.x
+            break
           case 'yearDay':
             ret += ' on the ' + this.x + ' day'
             break
@@ -51,7 +55,7 @@ function BarChart({data}) {
             ret += ' on the ' + this.x
             break
           case 'weekDay':
-            ret += ' on ' + this.x + 's'
+            ret += ' on a ' + this.x
             break
           case 'dayHour':
             ret += ' at ' + this.x
@@ -72,6 +76,8 @@ function BarChart({data}) {
           }
 
           switch (data.group) {
+            case 'yearMonth':
+              return months[a.X]
             case 'yearDay':
             case 'monthDay':
               return ordinalSuffix(a.X)

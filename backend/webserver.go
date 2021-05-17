@@ -79,7 +79,7 @@ func peopleHandler(c *fiber.Ctx) error {
 	}
 
 	switch groupBy {
-	case "yearDay", "monthDay", "weekDay", "weekHour", "dayHour":
+	case "yearMonth", "yearDay", "monthDay", "weekDay", "weekHour", "dayHour":
 
 		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "GymTracker"."alltime"."gyms" WHERE time > now()-365d GROUP BY ` + groupBy + ` FILL(0)`
 

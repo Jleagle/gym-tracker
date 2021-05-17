@@ -3,26 +3,27 @@ import BarChart from '../components/bar-chart'
 import LineChart from '../components/line-chart'
 import HeatMap from '../components/heat-map'
 import GithubCorner from 'react-github-corner'
-import Link from 'next/link'
+import Gyms from "../components/gyms"
 
 export async function getServerSideProps() {
 
-  // const base = 'http://localhost:' + process.env.GYMTRACKER_PORT_BACKEND + '/people.json?group=';
-  const base = 'https://gymtrackerapi.jimeagle.com/people.json?group='
+  // const base = 'http://localhost:' + process.env.GYMTRACKER_PORT_BACKEND + '/'
+  const base = 'https://gymtrackerapi.jimeagle.com/'
 
-  let [yearDay, monthDay, weekDay, weekHour, dayHour, now] = await Promise.all([
-    fetch(base + 'yearDay').then((response) => response.json()),
-    fetch(base + 'monthDay').then((response) => response.json()),
-    fetch(base + 'weekDay').then((response) => response.json()),
-    fetch(base + 'weekHour').then((response) => response.json()),
-    fetch(base + 'dayHour').then((response) => response.json()),
-    fetch(base + 'now').then((response) => response.json()),
+  let [gyms, now, dayHour, weekHour, weekDay, monthDay, yearMonth] = await Promise.all([
+    fetch(base + 'gyms.json').then((response) => response.json()),
+    fetch(base + 'people.json?group=now').then((response) => response.json()),
+    fetch(base + 'people.json?group=dayHour').then((response) => response.json()),
+    fetch(base + 'people.json?group=weekHour').then((response) => response.json()),
+    fetch(base + 'people.json?group=weekDay').then((response) => response.json()),
+    fetch(base + 'people.json?group=monthDay').then((response) => response.json()),
+    fetch(base + 'people.json?group=yearMonth').then((response) => response.json()),
   ])
 
-  return {props: {yearDay, monthDay, weekDay, weekHour, dayHour, now}}
+  return {props: {gyms, now, dayHour, weekHour, weekDay, monthDay, yearMonth}}
 }
 
-function HomePage({yearDay, monthDay, weekDay, weekHour, dayHour, now}) {
+function HomePage({gyms, now, dayHour, weekHour, weekDay, monthDay, yearMonth}) {
 
   return (
     <>
