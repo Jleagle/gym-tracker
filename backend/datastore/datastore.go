@@ -31,6 +31,14 @@ func init() {
 	}
 }
 
+func GetGyms() (creds []Credential, err error) {
+
+	query := datastore.NewQuery("Credential").DistinctOn("gym").Project("gym")
+
+	_, err = client.GetAll(ctx, query, &creds)
+	return creds, err
+}
+
 type Credential struct {
 	Email string `datastore:"email,noindex"`
 	PIN   string `datastore:"pin,noindex"`

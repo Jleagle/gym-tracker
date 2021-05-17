@@ -35,6 +35,7 @@ func webserver() error {
 
 	// Routes
 	app.Get("/", rootHandler)
+	app.Get("/gyms.json", gymsHandler)
 	app.Get("/people.json", peopleHandler)
 	app.Post("/new-gym", newGymHandler)
 
@@ -44,6 +45,21 @@ func webserver() error {
 
 func rootHandler(c *fiber.Ctx) error {
 	return c.SendString("OK")
+}
+
+func gymsHandler(c *fiber.Ctx) error {
+
+	gyms, err := datastore.GetGyms()
+	if err != nil {
+		return err
+	}
+
+	var resp []string
+	for _, v := range gyms {
+		resp = append(resp, v.Gym)
+	}
+
+	return c.JSON(resp)
 }
 
 var gc = cache.New(time.Minute, time.Second*10)
