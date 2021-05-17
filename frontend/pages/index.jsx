@@ -30,10 +30,7 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, dayHour, now}) {
       <div className="row">
         <div className="col">
 
-          <p>
-            Currently recording data from Fareham only.&nbsp;
-            <Link href="/new-gym">Add your gym</Link>.
-          </p>
+          <Gyms gyms={gyms}/>
 
           <h2>Now</h2>
           <LineChart data={now}/>
