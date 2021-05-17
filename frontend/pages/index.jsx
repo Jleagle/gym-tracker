@@ -35,23 +35,19 @@ function HomePage({yearDay, monthDay, weekDay, weekHour, dayHour, now}) {
             <Link href="/new-gym">Add your gym</Link>.
           </p>
 
-          <h2>Last 24 hours</h2>
+          <h2>Now</h2>
           <LineChart data={now}/>
 
-          <h2>By hour of the day</h2>
+          <h2>By Hour</h2>
           <BarChart data={dayHour}/>
-
-          <h2>By hour of the week</h2>
           <HeatMap data={weekHour}/>
 
-          <h2>By day of the week</h2>
+          <h2>By Day</h2>
           <BarChart data={weekDay}/>
-
-          <h2>By day of the month</h2>
           <BarChart data={monthDay}/>
 
-          <h2>By day of the year</h2>
-          <BarChart data={yearDay}/>
+          <h2>By Month</h2>
+          <BarChart data={yearMonth}/>
 
           <footer>
             Data updated every 10 minutes. If a gym has 10 or less members inside, it will show as 0.<br/>
