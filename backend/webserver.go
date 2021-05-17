@@ -123,12 +123,14 @@ func peopleHandler(c *fiber.Ctx) error {
 
 				y := map[string]json.Number{}
 				for k, col := range row {
-					if k > 0 {
+					if k > 0 && col != nil {
 						y[series.Columns[k]] = col.(json.Number)
 					}
 				}
 
-				ret.Cols = append(ret.Cols, RetCol{X: x, Y: y})
+				if len(y) > 0 {
+					ret.Cols = append(ret.Cols, RetCol{X: x, Y: y})
+				}
 			}
 		}
 	}
