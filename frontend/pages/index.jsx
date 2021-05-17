@@ -49,7 +49,7 @@ function HomePage({gyms, now, dayHour, weekHour, weekDay, monthDay, yearMonth}) 
 
           <footer>
             Data updated every 10 minutes. If a gym has 10 or less members inside, it will show as 0.<br/>
-            Created by <a href="https://jimeagle.com">Jim Eagle</a>
+            Created by <a href="https://jimeagle.com">Jim Eagle</a>.
           </footer>
         </div>
       </div>
