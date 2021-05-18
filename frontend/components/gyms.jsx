@@ -6,19 +6,31 @@ function Gyms(props) {
 
   const gyms = props.gyms.map((gym) => {
     return (
-      <Button type="button" variant="success">
-        <Link key={gym} href={'/' + gym}>{gym}</Link>
-      </Button>
+      <Link key={gym} href={'/' + gym}>
+        <Button type="button" variant="success" className="me-2">
+          {gym}
+        </Button>
+      </Link>
     )
   })
 
   gyms.push(
-    <Button type="button" variant="link">
-      <Link href="/new-gym">Add your gym!</Link>
-    </Button>
+    <Link href="/new-gym">
+      <Button type="button" variant="link" className="me-2">
+        Add your gym!
+      </Button>
+    </Link>
   )
 
-  return <div>{gyms}</div>
+  gyms.unshift(
+    <Link key="all" href="/all">
+      <Button type="button" variant="success" className="me-2">
+        all
+      </Button>
+    </Link>
+  )
+
+  return <div id="gyms">{gyms}</div>
 }
 
 export default Gyms
