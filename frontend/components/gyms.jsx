@@ -6,8 +6,8 @@ function Gyms(props) {
 
   const gyms = props.gyms.map((gym) => {
     return (
-      <Button key={gym} type="button" variant="success">
-        <Link href={'/' + gym}>{gym}</Link>
+      <Button type="button" variant="success">
+        <Link key={gym} href={'/' + gym}>{gym}</Link>
       </Button>
     )
   })
