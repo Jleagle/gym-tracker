@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import '../scss/bootstrap.scss'
 import '../scss/main.scss'
+import '../scss/new-gym.scss'
 import {Container} from 'react-bootstrap'
 import React from 'react'
 
