@@ -1,3 +1,2 @@
-- Auto refresh line chart
 - Improve theme, darker, fonts etc
 - Improve on mobile

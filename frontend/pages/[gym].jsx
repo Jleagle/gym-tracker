@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import BarChart from '../components/bar-chart'
 import LineChart from '../components/line-chart'
 import HeatMap from '../components/heat-map'
 import GithubCorner from 'react-github-corner'
 import Gyms from "../components/gyms"
+import {useRouter} from 'next/router'
 
 export async function getServerSideProps() {
 
@@ -24,6 +25,14 @@ export async function getServerSideProps() {
 }
 
 function HomePage({gyms, now, dayHour, weekHour, weekDay, monthDay, yearMonth}) {
+
+  const router = useRouter()
+
+  useEffect(() => {
+    setInterval(() => {
+      router.replace(router.asPath, undefined, {scroll: false})
+    }, 60_000 * 5)
+  })
 
   return (
     <>

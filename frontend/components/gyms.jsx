@@ -15,7 +15,7 @@ function Gyms(props) {
   })
 
   gyms.push(
-    <Link href="/new-gym">
+    <Link key="new" href="/new-gym">
       <Button type="button" variant="link" className="me-2">
         Add your gym!
       </Button>
