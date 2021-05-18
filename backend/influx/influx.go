@@ -58,9 +58,10 @@ func Write(gym string, count int, max int, percent float64, t time.Time) (resp *
 			Measurement: "gyms",
 			Tags: map[string]string{
 				"gym":       gym,
-				"yearDay":   strconv.Itoa(t.YearDay()),
-				"yearWeek":  strconv.Itoa(week),
+				"year":      strconv.Itoa(t.Year()),
 				"yearMonth": strconv.Itoa(int(t.Month())),
+				"yearWeek":  strconv.Itoa(week),
+				"yearDay":   strconv.Itoa(t.YearDay()),
 				"monthDay":  strconv.Itoa(t.Day()),
 				"weekDay":   strconv.Itoa(int(t.Weekday())),
 				"weekHour":  strconv.Itoa(int(t.Weekday())) + "-" + strconv.Itoa(t.Hour()),
