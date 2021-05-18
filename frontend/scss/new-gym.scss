@@ -1,0 +1,22 @@
+button {
+  svg {
+    width: 20px;
+  }
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fa-spinner {
+  /* Apply 'spinner' keyframes looping once every second (1s)  */
+  animation: spinner 1s linear infinite;
+}
+
+#gyms {
+  .btn-success a {
+    color: black;
+  }
+}

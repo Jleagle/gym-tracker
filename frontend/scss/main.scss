@@ -20,27 +20,6 @@ h2 {
   margin-top: 20px;
 }
 
-button {
-  svg {
-    width: 20px;
-  }
-}
-
-.btn-success a {
-  color: black;
-}
-
-@keyframes spinner {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.fa-spinner {
-  /* Apply 'spinner' keyframes looping once every second (1s)  */
-  animation: spinner 1s linear infinite;
-}
-
 footer {
   text-align: center;
   margin-top: 20px;

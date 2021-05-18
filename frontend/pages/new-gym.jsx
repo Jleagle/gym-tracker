@@ -3,6 +3,7 @@ import {Alert, Button, FormLabel} from 'react-bootstrap'
 import Link from 'next/link'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
+import '../scss/new-gym.scss'
 
 function NewGymPage() {
 
