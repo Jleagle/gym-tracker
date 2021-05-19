@@ -24,7 +24,6 @@ import (
 var (
 	baseContext  context.Context
 	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
-	cookies      = map[string][]*network.Cookie{}
 )
 
 func init() {
@@ -105,30 +104,6 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 
 	actions := []chromedp.Action{
 		network.Enable(),
-		chromedp.ActionFunc(func(ctx context.Context) error {
-
-			// logger.Info("Setting cookies", zap.Int("count", len(cookies)))
-
-			for _, cookie := range cookies[credential.Email] {
-
-				expr := cdp.TimeSinceEpoch(time.Unix(int64(cookie.Expires), 0))
-				err := network.SetCookie(cookie.Name, cookie.Value).
-					WithExpires(&expr).
-					WithDomain(cookie.Domain).
-					WithHTTPOnly(cookie.HTTPOnly).
-					WithPath(cookie.Path).
-					WithPriority(cookie.Priority).
-					WithSameSite(cookie.SameSite).
-					WithSecure(cookie.Secure).
-					Do(ctx)
-
-				if err != nil {
-					return err
-				}
-			}
-
-			return nil
-		}),
 		chromedp.Emulate(device.IPadPro),
 		chromedp.Navigate("https://www.puregym.com/members/"),
 		chromedp.WaitVisible("input[name=username], input[name=password], #people_in_gym"),
@@ -228,9 +203,33 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 
 			// logger.Info("Logged in, taking cookies")
 
-			var err error
-			cookies[credential.Email], err = network.GetAllCookies().Do(ctx)
-			return err
+			cookies, err := network.GetAllCookies().Do(ctx)
+			if err != nil {
+				return err
+			}
+
+			// Overwrite session cookies with non session cookies
+			for _, cookie := range cookies {
+				expr := cdp.TimeSinceEpoch(time.Now().Add(time.Hour))
+				err := network.SetCookie(cookie.Name, cookie.Value).
+					WithDomain(cookie.Domain).
+					WithPath(cookie.Path).
+					WithExpires(&expr).
+					WithHTTPOnly(cookie.HTTPOnly).
+					WithSecure(cookie.Secure).
+					WithSameSite(cookie.SameSite).
+					WithPriority(cookie.Priority).
+					WithSameParty(cookie.SameParty).
+					WithSourceScheme(cookie.SourceScheme).
+					WithSourcePort(cookie.SourcePort).
+					Do(ctx)
+
+				if err != nil {
+					return err
+				}
+			}
+
+			return nil
 		}),
 	}
 
