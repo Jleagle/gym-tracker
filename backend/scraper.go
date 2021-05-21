@@ -21,23 +21,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var (
-	baseContext  context.Context
-	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
-)
-
-func init() {
-
-	// create a new browser
-	baseContext, _ = chromedp.NewContext(context.Background())
-
-	// start the browser without a timeout
-	err := chromedp.Run(baseContext)
-	if err != nil {
-		log.Instance.Error("failed to start browser", zap.Error(err))
-	}
-}
-
 func scrapeGyms() {
 
 	creds, err := datastore.GetCredentials()
@@ -50,6 +33,8 @@ func scrapeGyms() {
 		scrapeGym(v)
 	}
 }
+
+var membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
 
 func scrapeGym(credential datastore.Credential) {
 
@@ -233,10 +218,6 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 		}),
 	}
 
-	// Make context
-	ctx, cancel1 := context.WithTimeout(baseContext, 30*time.Second)
-	defer cancel1()
-
 	abs, err := filepath.Abs("./")
 	if err != nil {
 		log.Instance.Error("abs", zap.Error(err))
@@ -248,19 +229,27 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 		// User agent and window size set in .Emulate()
 	)
 
-	ctx, cancel2 := chromedp.NewExecAllocator(ctx, opts...)
-	defer cancel2()
+	allocatorCtx, allocatorCancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer allocatorCancel()
 
-	ctx, cancel3 := chromedp.NewContext(ctx)
-	defer cancel3()
+	browserCtx, browserCancel := chromedp.NewContext(allocatorCtx)
+	defer browserCancel()
+
+	// Start a browser
+	if err := chromedp.Run(browserCtx); err != nil {
+		log.Instance.Error("starting browser", zap.Error(err))
+	}
+
+	timeoutCtx, timeoutCancel := context.WithTimeout(browserCtx, 30*time.Second)
+	defer timeoutCancel()
 
 	// Retry
 	work := func() error {
-		err = chromedp.Run(ctx, actions...)
+		err = chromedp.Run(timeoutCtx, actions...)
 		if err != nil {
 			return err
 		}
-		return chromedp.Cancel(ctx)
+		return chromedp.Cancel(timeoutCtx)
 	}
 	notify := func(error, time.Duration) { log.Instance.Info("Failed to request counts", zap.Error(err)) }
 	err = backoff.RetryNotify(work, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 10), notify)
