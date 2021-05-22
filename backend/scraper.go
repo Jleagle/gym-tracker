@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"path"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -21,6 +20,20 @@ import (
 	"go.uber.org/zap"
 )
 
+var browserCtx context.Context
+
+func init() {
+
+	allocatorCtx, _ := chromedp.NewExecAllocator(context.Background(), chromedp.DefaultExecAllocatorOptions[:]...)
+
+	browserCtx, _ = chromedp.NewContext(allocatorCtx)
+
+	// Start a browser
+	if err := chromedp.Run(browserCtx); err != nil {
+		log.Instance.Error("starting browser", zap.Error(err))
+	}
+}
+
 func scrapeGyms() {
 
 	creds, err := datastore.GetCredentials()
@@ -34,7 +47,10 @@ func scrapeGyms() {
 	}
 }
 
-var membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
+var (
+	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
+	cookies      = map[string][]*network.Cookie{}
+)
 
 func scrapeGym(credential datastore.Credential) {
 
@@ -89,6 +105,35 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 
 	actions := []chromedp.Action{
 		network.Enable(),
+		chromedp.ActionFunc(func(ctx context.Context) error {
+
+			// logger.Info("Setting cookies", zap.Int("count", len(cookies)))
+
+			network.ClearBrowserCookies()
+
+			for _, cookie := range cookies[credential.Email] {
+
+				expr := cdp.TimeSinceEpoch(time.Unix(int64(cookie.Expires), 0))
+				err := network.SetCookie(cookie.Name, cookie.Value).
+					WithExpires(&expr).
+					WithDomain(cookie.Domain).
+					WithHTTPOnly(cookie.HTTPOnly).
+					WithPath(cookie.Path).
+					WithPriority(cookie.Priority).
+					WithSameSite(cookie.SameSite).
+					WithSecure(cookie.Secure).
+					WithSameParty(cookie.SameParty).
+					WithSourcePort(cookie.SourcePort).
+					WithSourceScheme(cookie.SourceScheme).
+					Do(ctx)
+
+				if err != nil {
+					return err
+				}
+			}
+
+			return nil
+		}),
 		chromedp.Emulate(device.IPadPro),
 		chromedp.Navigate("https://www.puregym.com/members/"),
 		chromedp.WaitVisible("input[name=username], input[name=password], #people_in_gym"),
@@ -188,69 +233,21 @@ func scrape(credential datastore.Credential) (people, gym string, err error, err
 
 			// logger.Info("Logged in, taking cookies")
 
-			cookies, err := network.GetAllCookies().Do(ctx)
-			if err != nil {
-				return err
-			}
-
-			// Overwrite session cookies with non session cookies
-			for _, cookie := range cookies {
-				expr := cdp.TimeSinceEpoch(time.Now().Add(time.Hour))
-				err := network.SetCookie(cookie.Name, cookie.Value).
-					WithDomain(cookie.Domain).
-					WithPath(cookie.Path).
-					WithExpires(&expr).
-					WithHTTPOnly(cookie.HTTPOnly).
-					WithSecure(cookie.Secure).
-					WithSameSite(cookie.SameSite).
-					WithPriority(cookie.Priority).
-					WithSameParty(cookie.SameParty).
-					WithSourceScheme(cookie.SourceScheme).
-					WithSourcePort(cookie.SourcePort).
-					Do(ctx)
-
-				if err != nil {
-					return err
-				}
-			}
-
-			return nil
+			var err error
+			cookies[credential.Email], err = network.GetAllCookies().Do(ctx)
+			return err
 		}),
 	}
 
-	abs, err := filepath.Abs("./")
-	if err != nil {
-		log.Instance.Error("abs", zap.Error(err))
-	}
-
-	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.DisableGPU,
-		chromedp.UserDataDir(abs+"/user-data/"+credential.Email),
-		// User agent and window size set in .Emulate()
-	)
-
-	allocatorCtx, allocatorCancel := chromedp.NewExecAllocator(context.Background(), opts...)
-	defer allocatorCancel()
-
-	browserCtx, browserCancel := chromedp.NewContext(allocatorCtx)
-	defer browserCancel()
-
-	// Start a browser
-	if err := chromedp.Run(browserCtx); err != nil {
-		log.Instance.Error("starting browser", zap.Error(err))
-	}
-
-	timeoutCtx, timeoutCancel := context.WithTimeout(browserCtx, 30*time.Second)
-	defer timeoutCancel()
-
 	// Retry
 	work := func() error {
-		err = chromedp.Run(timeoutCtx, actions...)
-		if err != nil {
-			return err
-		}
-		return chromedp.Cancel(timeoutCtx)
+
+		timeoutCtx, timeoutCancel := context.WithTimeout(browserCtx, 30*time.Second)
+		defer timeoutCancel()
+
+		return chromedp.Run(timeoutCtx, actions...)
 	}
+
 	notify := func(error, time.Duration) { log.Instance.Info("Failed to request counts", zap.Error(err)) }
 	err = backoff.RetryNotify(work, backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 10), notify)
 
