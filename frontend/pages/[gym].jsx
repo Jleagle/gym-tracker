@@ -29,6 +29,17 @@ function HomePage({gyms, now, dayHour, weekHour, weekDay, monthDay, yearMonth}) 
   const router = useRouter()
 
   useEffect(() => {
+
+    const {gym} = router.query
+
+    const allButtons = document.querySelectorAll('#gyms button')
+    for (let i = 0; i < allButtons.length; i++) {
+      const enabled = (allButtons[i].getAttribute('data-gym') === gym)
+      allButtons[i].classList.add(enabled ? 'btn-success' : 'btn-link')
+      allButtons[i].classList.remove(enabled ? 'btn-link' : 'btn-success')
+    }
+
+
     setInterval(() => {
       router.replace(router.asPath, undefined, {scroll: false})
     }, 60_000 * 5)

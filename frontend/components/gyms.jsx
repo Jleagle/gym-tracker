@@ -7,7 +7,7 @@ function Gyms(props) {
   const gyms = props.gyms.map((gym) => {
     return (
       <Link key={gym} href={'/' + gym}>
-        <Button type="button" variant="success" className="me-2">
+        <Button type="button" variant="link" className="me-2" data-gym={gym}>
           {gym}
         </Button>
       </Link>
@@ -24,7 +24,7 @@ function Gyms(props) {
 
   gyms.unshift(
     <Link key="all" href="/all">
-      <Button type="button" variant="success" className="me-2">
+      <Button type="button" variant="link" className="me-2" data-gym="all">
         all
       </Button>
     </Link>
