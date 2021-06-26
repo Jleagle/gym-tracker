@@ -68,7 +68,7 @@ function HomePage({gyms, now, dayHour, weekHour, weekDay, monthDay, yearMonth}) 
           <BarChart data={yearMonth}/>
 
           <footer>
-            Data updated every 10 minutes. If a gym has 10 or less members inside, it will show as 0.<br/>
+            Data updated every 10 minutes. If a gym has 10 or less members inside, it is recorded as 0.<br/>
             Created by <a href="https://jimeagle.com">Jim Eagle</a>.
           </footer>
         </div>
