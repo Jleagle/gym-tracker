@@ -24,7 +24,9 @@ import (
 
 func webserver() error {
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		DisableStartupMessage: true,
+	})
 
 	// Middleware
 	if config.Environment == config.EnvProduction {
