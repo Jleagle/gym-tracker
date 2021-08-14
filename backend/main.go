@@ -75,5 +75,8 @@ func main() {
 }
 
 func calculatePercent(now int, max int) float64 {
+	if max == 0 {
+		return 0
+	}
 	return math.Round((float64(now)/float64(max))*100*100) / 100
 }
