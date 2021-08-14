@@ -48,7 +48,8 @@ func scrapeGyms() {
 }
 
 var (
-	membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
+	//membersRegex = regexp.MustCompile(`(?i)([0-9,]{1,4})\s(of)\s([0-9,]{1,4})`)
+	membersRegex = regexp.MustCompile(`(?i)([0-9]{1,3}) people`)
 	cookies      = map[string][]*network.Cookie{}
 )
 
@@ -76,7 +77,7 @@ func scrapeGym(credential datastore.Credential) {
 	}
 
 	members := membersRegex.FindStringSubmatch(peopleString)
-	if len(members) != 4 {
+	if len(members) != 2 {
 		log.Instance.Error("parsing count failed", zap.String("string", peopleString))
 		return
 	}
@@ -87,11 +88,12 @@ func scrapeGym(credential datastore.Credential) {
 		return
 	}
 
-	max, err := strconv.Atoi(strings.Replace(members[3], ",", "", 1))
-	if err != nil {
-		log.Instance.Error("parsing members", zap.Error(err), zap.String("string", peopleString))
-		return
-	}
+	max := 0
+	//max, err := strconv.Atoi(strings.Replace(members[3], ",", "", 1))
+	//if err != nil {
+	//	log.Instance.Error("parsing members", zap.Error(err), zap.String("string", peopleString))
+	//	return
+	//}
 
 	pct := calculatePercent(now, max)
 
