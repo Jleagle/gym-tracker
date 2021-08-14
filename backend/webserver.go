@@ -87,7 +87,7 @@ func peopleHandler(c *fiber.Ctx) error {
 
 	case "now":
 
-		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "GymTracker"."alltime"."gyms" WHERE time > now()-24h GROUP BY time(10m) FILL(linear)`
+		query = `SELECT mean("people") AS "members", mean("pcnt") AS "percent" FROM "GymTracker"."alltime"."gyms" WHERE time > now()-168h GROUP BY time(10m) FILL(linear)`
 
 	default:
 		return c.JSON(ret)
