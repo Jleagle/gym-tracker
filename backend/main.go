@@ -14,8 +14,11 @@ import (
 	"go.uber.org/zap"
 )
 
+var disableScraping = flag.Bool("noscrape", false, "Disable scraping")
+
 func main() {
 
+	flag.Parse()
 	rand.Seed(time.Now().Unix())
 
 	defer func() {
@@ -43,10 +46,6 @@ func main() {
 		log.Instance.Error("missing configs")
 		return
 	}
-
-	// Flags
-	disableScraping := flag.Bool("noscrape", false, "Disable scraping")
-	flag.Parse()
 
 	// Scrape
 	if !*disableScraping {
