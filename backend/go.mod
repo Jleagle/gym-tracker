@@ -18,8 +18,7 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
 	go.uber.org/zap v1.20.0
-	golang.org/x/net v0.0.0-20220105145211-5b0dc2dfae98 // indirect
-	golang.org/x/tools v0.1.8 // indirect
+	golang.org/x/net v0.7.0 // indirect
 	google.golang.org/api v0.64.0
 	google.golang.org/genproto v0.0.0-20220106181925-4b6d468c965f // indirect
 	google.golang.org/grpc v1.43.0 // indirect
