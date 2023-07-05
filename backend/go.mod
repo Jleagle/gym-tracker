@@ -3,8 +3,7 @@ module github.com/Jleagle/gym-tracker
 go 1.15
 
 require (
-	cloud.google.com/go v0.100.2 // indirect
-	cloud.google.com/go/datastore v1.6.0
+	cloud.google.com/go/datastore v1.10.0
 	github.com/cenkalti/backoff/v4 v4.1.2
 	github.com/chromedp/cdproto v0.0.0-20220106001210-12edfdeb56f8
 	github.com/chromedp/chromedp v0.7.6
@@ -16,7 +15,6 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.7.0 // indirect
 	go.uber.org/zap v1.20.0
-	google.golang.org/api v0.64.0
-	google.golang.org/genproto v0.0.0-20220106181925-4b6d468c965f // indirect
-	google.golang.org/grpc v1.43.0 // indirect
+	google.golang.org/api v0.103.0
+	google.golang.org/grpc v1.53.0 // indirect
 )
