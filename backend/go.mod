@@ -7,7 +7,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.1.2
 	github.com/chromedp/cdproto v0.0.0-20220106001210-12edfdeb56f8
 	github.com/chromedp/chromedp v0.7.6
-	github.com/gofiber/fiber/v2 v2.50.0
+	github.com/gofiber/fiber/v2 v2.52.1
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/influxdata/influxdb1-client v0.0.0-20200827194710-b269163b24ab
 	github.com/patrickmn/go-cache v2.1.0+incompatible
